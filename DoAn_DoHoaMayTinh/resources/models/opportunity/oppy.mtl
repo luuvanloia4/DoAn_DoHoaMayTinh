@@ -1,0 +1,22 @@
+# Made in Blockbench 2.5.1
+newmtl 0
+map_Kd wheel1.png
+newmtl 1
+map_Kd wheel2.png
+newmtl 2
+map_Kd solar_br.png
+newmtl 3
+map_Kd solar_br2.png
+newmtl 4
+map_Kd solar_br3.png
+newmtl 5
+map_Kd metal1.png
+newmtl 6
+map_Kd metal2.png
+newmtl 7
+map_Kd metal3.png
+newmtl 8
+map_Kd metal4.png
+newmtl 9
+map_Kd metal5.png
+newmtl none

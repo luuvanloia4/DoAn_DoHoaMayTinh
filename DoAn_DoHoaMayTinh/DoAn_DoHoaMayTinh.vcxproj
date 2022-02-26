@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\cbs\components\Camera.cpp" />
+    <ClCompile Include="src\cbs\components\Component.cpp" />
+    <ClCompile Include="src\cbs\components\Cube.cpp" />
+    <ClCompile Include="src\cbs\components\DirectionalLight.cpp" />
+    <ClCompile Include="src\cbs\components\FirstPersonController.cpp" />
+    <ClCompile Include="src\cbs\components\MeshRenderer.cpp" />
+    <ClCompile Include="src\cbs\components\PointLight.cpp" />
+    <ClCompile Include="src\cbs\components\TextRenderer.cpp" />
+    <ClCompile Include="src\cbs\components\ThirdPersonController.cpp" />
+    <ClCompile Include="src\cbs\components\Transform.cpp" />
+    <ClCompile Include="src\cbs\connections\ConnectionsManager.cpp" />
+    <ClCompile Include="src\cbs\Object.cpp" />
+    <ClCompile Include="src\cbs\ObjectManager.cpp" />
+    <ClCompile Include="src\debuging\platform\win32\Win32Logger.cpp" />
+    <ClCompile Include="src\rendering\DrawManager.cpp" />
+    <ClCompile Include="src\rendering\Model\Mesh.cpp" />
+    <ClCompile Include="src\rendering\Model\Model.cpp" />
+    <ClCompile Include="src\rendering\primitives\Cubemap.cpp" />
+    <ClCompile Include="src\rendering\primitives\Cuboid.cpp" />
+    <ClCompile Include="src\rendering\primitives\Line.cpp" />
+    <ClCompile Include="src\rendering\primitives\Plane.cpp" />
+    <ClCompile Include="src\rendering\primitives\Sphere.cpp" />
+    <ClCompile Include="src\rendering\ShaderProgram.cpp" />
+    <ClCompile Include="src\rendering\Texture.cpp" />
+    <ClCompile Include="src\resources\RawModel\RawMesh.cpp" />
+    <ClCompile Include="src\resources\RawModel\RawModel.cpp" />
+    <ClCompile Include="src\resources\RawTexture.cpp" />
+    <ClCompile Include="src\resources\ResourcesManager.cpp" />
+    <ClCompile Include="src\scenes\Scene.cpp" />
+    <ClCompile Include="src\Source.cpp" />
+    <ClCompile Include="src\utilities\Input.cpp" />
+    <ClCompile Include="src\utilities\Time.cpp" />
+    <ClCompile Include="src\utilities\Window.cpp" />
+    <ClCompile Include="ThuVien\glad.c" />
+    <ClCompile Include="ThuVien\include\dependencies\imgui\imgui.cpp" />
+    <ClCompile Include="ThuVien\include\dependencies\imgui\imgui_demo.cpp" />
+    <ClCompile Include="ThuVien\include\dependencies\imgui\imgui_draw.cpp" />
+    <ClCompile Include="ThuVien\include\dependencies\imgui\imgui_impl_glfw.cpp" />
+    <ClCompile Include="ThuVien\include\dependencies\imgui\imgui_impl_opengl2.cpp" />
+    <ClCompile Include="ThuVien\include\dependencies\imgui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="ThuVien\include\dependencies\imgui\imgui_tables.cpp" />
+    <ClCompile Include="ThuVien\include\dependencies\imgui\imgui_widgets.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\gameobject\Bullet.h" />
+    <ClInclude Include="src\rendering\ListMaterial.h" />
+    <ClInclude Include="src\rendering\Material.h" />
+    <ClInclude Include="src\gameobject\Box.h" />
+    <ClInclude Include="MoveController.h" />
+    <ClInclude Include="src\cbs\components\Camera.h" />
+    <ClInclude Include="src\cbs\components\Component.h" />
+    <ClInclude Include="src\cbs\components\Cube.h" />
+    <ClInclude Include="src\cbs\components\DirectionalLight.h" />
+    <ClInclude Include="src\cbs\components\FirstPersonController.h" />
+    <ClInclude Include="src\cbs\components\MeshRenderer.h" />
+    <ClInclude Include="src\cbs\components\PointLight.h" />
+    <ClInclude Include="src\cbs\components\TextRenderer.h" />
+    <ClInclude Include="src\cbs\components\ThirdPersonController.h" />
+    <ClInclude Include="src\cbs\components\Transform.h" />
+    <ClInclude Include="src\cbs\connections\ConnectionInterfaces.h" />
+    <ClInclude Include="src\cbs\connections\ConnectionsManager.h" />
+    <ClInclude Include="src\cbs\connections\MessageIn.h" />
+    <ClInclude Include="src\cbs\connections\MessageOut.h" />
+    <ClInclude Include="src\cbs\connections\PropertyIn.h" />
+    <ClInclude Include="src\cbs\connections\PropertyOut.h" />
+    <ClInclude Include="src\cbs\connections\TriggerIn.h" />
+    <ClInclude Include="src\cbs\connections\TriggerOut.h" />
+    <ClInclude Include="src\cbs\Object.h" />
+    <ClInclude Include="src\cbs\ObjectManager.h" />
+    <ClInclude Include="src\core\Enum.h" />
+    <ClInclude Include="src\debuging\Logger.h" />
+    <ClInclude Include="src\debuging\platform\win32\Win32Logger.h" />
+    <ClInclude Include="src\rendering\DrawManager.h" />
+    <ClInclude Include="src\rendering\IDrawable.h" />
+    <ClInclude Include="src\rendering\IGUIWidget.h" />
+    <ClInclude Include="src\rendering\IShaderProperty.h" />
+    <ClInclude Include="src\rendering\Model\Mesh.h" />
+    <ClInclude Include="src\rendering\Model\Model.h" />
+    <ClInclude Include="src\rendering\primitives\Cubemap.h" />
+    <ClInclude Include="src\rendering\primitives\Cuboid.h" />
+    <ClInclude Include="src\rendering\primitives\Line.h" />
+    <ClInclude Include="src\rendering\primitives\Plane.h" />
+    <ClInclude Include="src\rendering\primitives\Sphere.h" />
+    <ClInclude Include="src\rendering\primitives\SphereData.h" />
+    <ClInclude Include="src\rendering\ShaderProgram.h" />
+    <ClInclude Include="src\rendering\Texture.h" />
+    <ClInclude Include="src\resources\RawModel\RawMesh.h" />
+    <ClInclude Include="src\resources\RawModel\RawModel.h" />
+    <ClInclude Include="src\resources\RawTexture.h" />
+    <ClInclude Include="src\resources\ResourcesManager.h" />
+    <ClInclude Include="src\scenes\MyScene.h" />
+    <ClInclude Include="src\scenes\Scene.h" />
+    <ClInclude Include="src\utilities\Input.h" />
+    <ClInclude Include="src\utilities\Time.h" />
+    <ClInclude Include="src\utilities\Window.h" />
+    <ClInclude Include="ThuVien\include\AL\alut.h" />
+    <ClInclude Include="ThuVien\include\dependencies\imgui\imconfig.h" />
+    <ClInclude Include="ThuVien\include\dependencies\imgui\imgui.h" />
+    <ClInclude Include="ThuVien\include\dependencies\imgui\imgui_impl_glfw.h" />
+    <ClInclude Include="ThuVien\include\dependencies\imgui\imgui_impl_opengl2.h" />
+    <ClInclude Include="ThuVien\include\dependencies\imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="ThuVien\include\dependencies\imgui\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="ThuVien\include\dependencies\imgui\imgui_internal.h" />
+    <ClInclude Include="ThuVien\include\dependencies\imgui\imstb_rectpack.h" />
+    <ClInclude Include="ThuVien\include\dependencies\imgui\imstb_textedit.h" />
+    <ClInclude Include="ThuVien\include\dependencies\imgui\imstb_truetype.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="assimp-vc142-mtd.dll" />
+    <None Include="glew32.dll" />
+    <None Include="glfw3.dll" />
+    <None Include="glut32.dll" />
+    <None Include="src\shaders\PHONG.frag" />
+    <None Include="src\shaders\PHONG.vert" />
+    <None Include="src\shaders\PURE_COLOR.frag" />
+    <None Include="src\shaders\PURE_COLOR.vert" />
+    <None Include="src\shaders\PURE_TEXTURE.frag" />
+    <None Include="src\shaders\PURE_TEXTURE.vert" />
+    <None Include="src\shaders\SKYBOX.frag" />
+    <None Include="src\shaders\SKYBOX.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="resources\fonts\times.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="resources\audio\ambient.wav" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{362142d0-6621-4fb8-8c96-a017b707f62e}</ProjectGuid>
+    <RootNamespace>DoAnDoHoaMayTinh</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <ReferencePath>$(ReferencePath)</ReferencePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)ThuVien\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)ThuVien\lib\glfw;$(SolutionDir)ThuVien\lib\glew;$(SolutionDir)ThuVien\lib\glut;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;glfw3dll.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>ThuVien\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>ThuVien\lib\al;ThuVien\lib\assimp;ThuVien\lib\glut;ThuVien\lib\glfw;ThuVien\lib\glew;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>OpenAL32.lib;assimp-vc142-mtd.lib;opengl32.lib;glfw3.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)ThuVien\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets" />
+</Project>
