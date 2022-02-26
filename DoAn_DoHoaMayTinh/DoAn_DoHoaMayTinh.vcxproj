@@ -131,6 +131,10 @@
     <None Include="glew32.dll" />
     <None Include="glfw3.dll" />
     <None Include="glut32.dll" />
+    <None Include="resources\models\opportunity\oppy.mtl" />
+    <None Include="resources\models\opportunity\oppy_no_wheels.mtl" />
+    <None Include="resources\models\opportunity\oppy_wheel.mtl" />
+    <None Include="resources\texts\boxmap\map_1.map" />
     <None Include="src\shaders\PHONG.frag" />
     <None Include="src\shaders\PHONG.vert" />
     <None Include="src\shaders\PURE_COLOR.frag" />
@@ -145,6 +149,80 @@
   </ItemGroup>
   <ItemGroup>
     <Media Include="resources\audio\ambient.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="resources\models\ball1\ball.obj" />
+    <Object Include="resources\models\ball\ball.obj" />
+    <Object Include="resources\models\ErrorMesh\ErrorMesh.obj" />
+    <Object Include="resources\models\my_models\ball\ball.obj" />
+    <Object Include="resources\models\opportunity\oppy.obj" />
+    <Object Include="resources\models\opportunity\oppy_no_wheels.obj" />
+    <Object Include="resources\models\opportunity\oppy_wheel.obj" />
+    <Object Include="resources\models\user\user.obj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="resources\models\opportunity\metal1.png" />
+    <Image Include="resources\models\opportunity\metal2.png" />
+    <Image Include="resources\models\opportunity\metal3.png" />
+    <Image Include="resources\models\opportunity\metal4.png" />
+    <Image Include="resources\models\opportunity\metal5.png" />
+    <Image Include="resources\models\opportunity\solar_br.png" />
+    <Image Include="resources\models\opportunity\solar_br2.png" />
+    <Image Include="resources\models\opportunity\solar_br3.png" />
+    <Image Include="resources\models\opportunity\wheel1.png" />
+    <Image Include="resources\models\opportunity\wheel2.png" />
+    <Image Include="resources\skyboxes\mars\back.png" />
+    <Image Include="resources\skyboxes\mars\bottom.png" />
+    <Image Include="resources\skyboxes\mars\front.png" />
+    <Image Include="resources\skyboxes\mars\left.png" />
+    <Image Include="resources\skyboxes\mars\right.png" />
+    <Image Include="resources\skyboxes\mars\top.png" />
+    <Image Include="resources\textures\box0.png" />
+    <Image Include="resources\textures\box1.jfif" />
+    <Image Include="resources\textures\box10.jfif" />
+    <Image Include="resources\textures\box11.png" />
+    <Image Include="resources\textures\box12.jfif" />
+    <Image Include="resources\textures\box13.jfif" />
+    <Image Include="resources\textures\box14.jfif" />
+    <Image Include="resources\textures\box15.jfif" />
+    <Image Include="resources\textures\box16.jfif" />
+    <Image Include="resources\textures\box17.jfif" />
+    <Image Include="resources\textures\box18.jfif" />
+    <Image Include="resources\textures\box19.jfif" />
+    <Image Include="resources\textures\box2.jfif" />
+    <Image Include="resources\textures\box20.jfif" />
+    <Image Include="resources\textures\box21.jfif" />
+    <Image Include="resources\textures\box22.jfif" />
+    <Image Include="resources\textures\box23.jfif" />
+    <Image Include="resources\textures\box24.jfif" />
+    <Image Include="resources\textures\box25.jfif" />
+    <Image Include="resources\textures\box26.png" />
+    <Image Include="resources\textures\box27.jfif" />
+    <Image Include="resources\textures\box28.jfif" />
+    <Image Include="resources\textures\box29.jfif" />
+    <Image Include="resources\textures\box3.jfif" />
+    <Image Include="resources\textures\box30.jfif" />
+    <Image Include="resources\textures\box31.png" />
+    <Image Include="resources\textures\box32.jfif" />
+    <Image Include="resources\textures\box33.jfif" />
+    <Image Include="resources\textures\box34.jfif" />
+    <Image Include="resources\textures\box35.jfif" />
+    <Image Include="resources\textures\box36.jfif" />
+    <Image Include="resources\textures\box37.jfif" />
+    <Image Include="resources\textures\box38.jfif" />
+    <Image Include="resources\textures\box39.jfif" />
+    <Image Include="resources\textures\box4.jfif" />
+    <Image Include="resources\textures\box40.png" />
+    <Image Include="resources\textures\box5.jfif" />
+    <Image Include="resources\textures\box6.jfif" />
+    <Image Include="resources\textures\box7.jfif" />
+    <Image Include="resources\textures\box8.jfif" />
+    <Image Include="resources\textures\box9.jfif" />
+    <Image Include="resources\textures\ErrorTexture.jpg" />
+    <Image Include="resources\textures\ErrorTexture.png" />
+    <Image Include="resources\textures\ErrorTexture1.png" />
+    <Image Include="resources\textures\ground.jpg" />
+    <Image Include="resources\textures\rubik.jpg" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
