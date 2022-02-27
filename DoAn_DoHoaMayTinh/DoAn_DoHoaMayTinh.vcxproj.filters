@@ -343,9 +343,6 @@
     <None Include="assimp-vc142-mtd.dll" />
     <None Include="glew32.dll" />
     <None Include="glfw3.dll" />
-    <None Include="resources\models\opportunity\oppy.mtl" />
-    <None Include="resources\models\opportunity\oppy_no_wheels.mtl" />
-    <None Include="resources\models\opportunity\oppy_wheel.mtl" />
     <None Include="resources\texts\boxmap\map_1.map" />
   </ItemGroup>
   <ItemGroup>
@@ -357,46 +354,6 @@
     </Media>
   </ItemGroup>
   <ItemGroup>
-    <Object Include="resources\models\ball\ball.obj" />
-    <Object Include="resources\models\ball1\ball.obj" />
-    <Object Include="resources\models\ErrorMesh\ErrorMesh.obj" />
-    <Object Include="resources\models\my_models\ball\ball.obj" />
-    <Object Include="resources\models\opportunity\oppy.obj" />
-    <Object Include="resources\models\opportunity\oppy_no_wheels.obj" />
-    <Object Include="resources\models\opportunity\oppy_wheel.obj" />
-    <Object Include="resources\models\user\user.obj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="resources\models\opportunity\metal1.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="resources\models\opportunity\metal2.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="resources\models\opportunity\metal3.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="resources\models\opportunity\metal4.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="resources\models\opportunity\metal5.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="resources\models\opportunity\solar_br.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="resources\models\opportunity\solar_br2.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="resources\models\opportunity\solar_br3.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="resources\models\opportunity\wheel1.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="resources\models\opportunity\wheel2.png">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="resources\skyboxes\mars\back.png">
       <Filter>Resource Files</Filter>
     </Image>

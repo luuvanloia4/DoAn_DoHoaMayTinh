@@ -13,16 +13,16 @@ void TryToKill(int posY, int posX, int typeToKill) {
         g_BoxMap[posY][posX] = NULL;
 
         //Loang
-        if (posY > 0) {
+        if (posY > 0 && g_BoxMap[posY - 1][posX] != NULL) {
             TryToKill(posY - 1, posX, typeToKill);
         }
-        if (posY < g_MapHeight - 1) {
+        if (posY < g_MapHeight - 1 && g_BoxMap[posY + 1][posX] != NULL) {
             TryToKill(posY + 1, posX, typeToKill);
         }
-        if (posX > 0) {
+        if (posX > 0 && g_BoxMap[posY][posX - 1] != NULL) {
             TryToKill(posY, posX - 1, typeToKill);
         }
-        if (posX < g_MapWidth - 1) {
+        if (posX < g_MapWidth - 1 && g_BoxMap[posY][posX + 1] != NULL) {
             TryToKill(posY, posX + 1, typeToKill);
         }
     }
@@ -56,11 +56,6 @@ void Scene::Run() {
         // Update global systems
         g_Time.Update();
         g_Input.Update(g_Window);
-        
-        // Update managers
-        //m_PhysicsManager.StepSimulation(g_Time.DeltaTime());
-        m_ObjectManager.ProcessFrame();
-        m_DrawManager.CallDraws();
 
         //Fire
         if (g_IsFire) {
@@ -124,23 +119,30 @@ void Scene::Run() {
                 m_MapOffset++;
                 for (int i = 0; i < g_MapHeight - 1; i++) {
                     for (int j = 0; j < g_MapWidth; j++) {
-                        if (g_BoxMap[i + 1][j] != NULL) {
-                            g_BoxMap[i][j] = g_BoxMap[i + 1][j];
+                        g_BoxMap[i][j] = g_BoxMap[i + 1][j];
+                        if (g_BoxMap[i][j] != NULL) {
                             g_BoxMap[i][j]->Move(glm::vec3(0.0f, - (g_BoxSize + g_BoxMargin), 0.0f));
                         }
                     }
                 }
                 //Load hàng tiếp theo
-                for (int j = 0; j < g_MapWidth; j++) {
-                    g_BoxMap[g_MapHeight - 1][j] = new Box(glm::vec3(g_OffsetFront, g_OffsetTop, g_OffsetLeft + j * (g_BoxSize + g_BoxMargin)),
-                                                        m_BoxType[m_MapOffset + g_MapHeight - 1][j], false);
-                    g_BoxMap[g_MapHeight - 1][j]->SetSize(glm::vec3(g_BoxSize));
+                if (m_MapOffset + g_MapHeight < g_MapHeight_Max) {
+                    for (int j = 0; j < g_MapWidth; j++) {
+                        g_BoxMap[g_MapHeight - 1][j] = new Box(glm::vec3(g_OffsetFront, g_OffsetTop, g_OffsetLeft + j * (g_BoxSize + g_BoxMargin)),
+                            m_BoxType[m_MapOffset + g_MapHeight - 1][j], false);
+                        g_BoxMap[g_MapHeight - 1][j]->SetSize(glm::vec3(g_BoxSize));
+                    }
                 }
 
                 m_LastTimeChange = g_Time.CurrentTime();
                 std::cout << "-- Time: " << m_LastTimeChange << ": Box map change (offset: " << m_MapOffset << ")" << std::endl;
             }
         }
+
+        // Update managers
+        //m_PhysicsManager.StepSimulation(g_Time.DeltaTime());
+        m_ObjectManager.ProcessFrame();
+        m_DrawManager.CallDraws();
     }
 }
 

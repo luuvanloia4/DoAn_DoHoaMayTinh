@@ -195,7 +195,10 @@ void MyScene::CreateScene() {
     }
 
     //Red dot
-    g_RedDot = new Bullet(glm::vec3(1.0f, 0.2f, 0.2f), false, "");
+    g_RedDot = new Bullet(glm::vec3(0.0f), false, "");
+    int newBulletType = rand() % 3 + 1;
+    g_RedDot->m_Type = newBulletType;
+    g_RedDot->m_Color = Box::GenColor(newBulletType);
     g_RedDot->SetSize(glm::vec3(0.05f));
 
 //End Game object

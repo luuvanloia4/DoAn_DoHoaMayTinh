@@ -131,9 +131,6 @@
     <None Include="glew32.dll" />
     <None Include="glfw3.dll" />
     <None Include="glut32.dll" />
-    <None Include="resources\models\opportunity\oppy.mtl" />
-    <None Include="resources\models\opportunity\oppy_no_wheels.mtl" />
-    <None Include="resources\models\opportunity\oppy_wheel.mtl" />
     <None Include="resources\texts\boxmap\map_1.map" />
     <None Include="src\shaders\PHONG.frag" />
     <None Include="src\shaders\PHONG.vert" />
@@ -151,26 +148,6 @@
     <Media Include="resources\audio\ambient.wav" />
   </ItemGroup>
   <ItemGroup>
-    <Object Include="resources\models\ball1\ball.obj" />
-    <Object Include="resources\models\ball\ball.obj" />
-    <Object Include="resources\models\ErrorMesh\ErrorMesh.obj" />
-    <Object Include="resources\models\my_models\ball\ball.obj" />
-    <Object Include="resources\models\opportunity\oppy.obj" />
-    <Object Include="resources\models\opportunity\oppy_no_wheels.obj" />
-    <Object Include="resources\models\opportunity\oppy_wheel.obj" />
-    <Object Include="resources\models\user\user.obj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="resources\models\opportunity\metal1.png" />
-    <Image Include="resources\models\opportunity\metal2.png" />
-    <Image Include="resources\models\opportunity\metal3.png" />
-    <Image Include="resources\models\opportunity\metal4.png" />
-    <Image Include="resources\models\opportunity\metal5.png" />
-    <Image Include="resources\models\opportunity\solar_br.png" />
-    <Image Include="resources\models\opportunity\solar_br2.png" />
-    <Image Include="resources\models\opportunity\solar_br3.png" />
-    <Image Include="resources\models\opportunity\wheel1.png" />
-    <Image Include="resources\models\opportunity\wheel2.png" />
     <Image Include="resources\skyboxes\mars\back.png" />
     <Image Include="resources\skyboxes\mars\bottom.png" />
     <Image Include="resources\skyboxes\mars\front.png" />
