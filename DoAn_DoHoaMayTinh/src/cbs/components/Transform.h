@@ -35,6 +35,7 @@ public:
     glm::vec3 Position() const;
     void Position(const glm::vec3& position);
     void Move(const glm::vec3& vector);
+    void MoveWithoutRotation(const glm::vec3& vector);
 
     glm::quat Rotation() const;
     void Rotation(const glm::quat& rotation);
@@ -77,4 +78,6 @@ private:
     //Collision
     int m_CollisionType = 0; // 0: none, 1: top, 2: bottom, 3: left, 4: right, 5: front, 6 back
 };
+
+extern glm::quat g_CameraRotation;
 #endif

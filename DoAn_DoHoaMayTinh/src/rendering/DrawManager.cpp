@@ -15,11 +15,11 @@ void DrawManager::Initialize() {
     INFO_LOG(Logger::ESender::Rendering, "Initializing draw manager");
 
     // Dear imgui initialiation
-    ImGui::CreateContext();
+    IMGUI_CHECKVERSION();
+    ImGui::SetCurrentContext(ImGui::CreateContext());
     ImGui::StyleColorsDark();
     ImGui_ImplGlfw_InitForOpenGL(g_Window, true);
     ImGui_ImplOpenGL3_Init("#version 330 core");
-
     // Load default font
     ImGuiIO& io = ImGui::GetIO();
     io.Fonts->AddFontDefault();
@@ -148,7 +148,6 @@ void DrawManager::CallDraws() {
     auto& pure_color_shader = m_ShaderPrograms[static_cast<size_t>(EShaderType::PureColor)];
     pure_color_shader.Use();
 
-
     if (g_RedDotSize >= 0.04f) {
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     }
@@ -195,18 +194,18 @@ void DrawManager::CallDraws() {
         glDepthFunc(GL_LESS);
     }
 
-    //// Draw GUI
-    //ImGui_ImplOpenGL3_NewFrame();
-    //ImGui_ImplGlfw_NewFrame();
-    //ImGui::NewFrame();
+    // Draw GUI
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplGlfw_NewFrame();
+    ImGui::NewFrame();
 
-    //for (auto widget = m_GUIWidgets.begin(); widget != m_GUIWidgets.end(); widget++) {
-    //    (*widget)->Draw();
-    //}
+    for (auto widget : m_GUIWidgets) {
+        widget->Draw();
+    }
 
-    //ImGui::Render();
-    //ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-    //ImGui::EndFrame();
+    ImGui::Render();
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+    ImGui::EndFrame();
 
     // End of drawing
     glfwSwapBuffers(g_Window);

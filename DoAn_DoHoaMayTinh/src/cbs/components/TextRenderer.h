@@ -3,18 +3,23 @@
 
 #include "Component.h"
 #include "../../rendering/IGUIWidget.h"
-#include "../Object.h"
-#include "../../scenes/Scene.h"
+//#include "../Object.h"
+//#include "../../scenes/Scene.h"
+#include "../../utilities/Window.h"
 #include "../connections/MessageIn.h"
 
-#include <string>
+#include "../../rendering/DrawManager.h"
+
+//#include <string>
 
 class TextRenderer : public Component, public IGUIWidget {
 public:
+    TextRenderer();
+    TextRenderer(float size);
     TextRenderer(const std::string& font_path, float size);
 
-    void Initialize() override;
-    void Destroy() override;
+    /*void Initialize() override;
+    void Destroy() override;*/
 
     void Draw() const override;
 
@@ -27,7 +32,9 @@ public:
     const glm::vec4 Color() const { return m_Color; }
     void Color(glm::vec4 color) { m_Color = color; }
 
-public:
+    const glm::vec2 Size() const { return m_Size; }
+    void Size(glm::vec2 size) { m_Size = size; }
+
     MessageIn<std::string, TextRenderer, &TextRenderer::Text> TextIn{ this };
     MessageIn<glm::vec4, TextRenderer, &TextRenderer::Color> ColorIn{ this };
 
@@ -36,6 +43,7 @@ private:
 
     EAlign m_Horizontal;
     EAlign m_Vertical;
+    glm::vec2 m_Size;
     glm::vec2 m_Offset;
     glm::vec4 m_Color;
     ImFont* m_Font;

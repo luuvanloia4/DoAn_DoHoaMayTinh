@@ -63,10 +63,14 @@
     <ClCompile Include="ThuVien\include\dependencies\imgui\imgui_widgets.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\core\debuging\gameobject\Bullet.h" />
+    <ClInclude Include="src\debuging\Logger.h" />
+    <ClInclude Include="src\debuging\platform\win32\Win32Logger.h" />
+    <ClInclude Include="src\gameobject\Box.h" />
     <ClInclude Include="src\gameobject\Bullet.h" />
     <ClInclude Include="src\rendering\ListMaterial.h" />
     <ClInclude Include="src\rendering\Material.h" />
-    <ClInclude Include="src\gameobject\Box.h" />
+    <ClInclude Include="src\core\debuging\gameobject\Box.h" />
     <ClInclude Include="MoveController.h" />
     <ClInclude Include="src\cbs\components\Camera.h" />
     <ClInclude Include="src\cbs\components\Component.h" />
@@ -89,8 +93,6 @@
     <ClInclude Include="src\cbs\Object.h" />
     <ClInclude Include="src\cbs\ObjectManager.h" />
     <ClInclude Include="src\core\Enum.h" />
-    <ClInclude Include="src\debuging\Logger.h" />
-    <ClInclude Include="src\debuging\platform\win32\Win32Logger.h" />
     <ClInclude Include="src\rendering\DrawManager.h" />
     <ClInclude Include="src\rendering\IDrawable.h" />
     <ClInclude Include="src\rendering\IGUIWidget.h" />
@@ -132,6 +134,7 @@
     <None Include="glfw3.dll" />
     <None Include="glut32.dll" />
     <None Include="resources\texts\boxmap\map_1.map" />
+    <None Include="resources\texts\boxmap\map_test.map" />
     <None Include="src\shaders\PHONG.frag" />
     <None Include="src\shaders\PHONG.vert" />
     <None Include="src\shaders\PURE_COLOR.frag" />
@@ -265,6 +268,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(ProjectDir)</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -320,13 +324,15 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)ThuVien\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>ThuVien\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>ThuVien\lib\glew;ThuVien\lib\glfw;ThuVien\lib\glut;ThuVien\lib\assimp;ThuVien\lib\al;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>OpenAL32.lib;assimp-vc142-mtd.lib;opengl32.lib;glfw3.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

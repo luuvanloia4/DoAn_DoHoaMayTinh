@@ -36,5 +36,6 @@ private:
 };
 
 extern Time g_Time;
-
+//Preview
+extern bool g_IsPreview;
 #endif

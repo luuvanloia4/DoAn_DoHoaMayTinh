@@ -45,32 +45,32 @@ public:
 		switch (type) {
 		case 1:
 			//rs = glm::vec3(0.9f, 0.0f, 0.3f);
-			rs = glm::vec3(0.9f, 0.9f, 0.9f);
+			rs = glm::vec3(1.0f, 0.1f, 0.1f);
 			break;
 		case 2:
-			rs = glm::vec3(0.0f, 0.9f, 0.5f);
+			rs = glm::vec3(0.1f, 1.0f, 0.1f);
 			break;
 		case 3:
-			rs = glm::vec3(0.0f, 0.8f, 1.0f);
+			rs = glm::vec3(0.1f, 0.1f, 1.0f);
 			break;
 			//Optional
 		case 4:
-			rs = glm::vec3(1.0f, 0.5f, 0.2f);
+			rs = glm::vec3(1.0f, 1.0f, 0.2f);
 			break;
 		case 5:
-			rs = glm::vec3(1.0f, 0.2f, 0.5f);
+			rs = glm::vec3(1.0f, 0.2f, 1.0f);
 			break;
 		case 6:
-			rs = glm::vec3(0.5f, 1.0f, 0.2f);
+			rs = glm::vec3(0.2f, 1.0f, 1.0f);
 			break;
 		case 7:
-			rs = glm::vec3(0.2f, 1.0f, 0.5f);
+			rs = glm::vec3(0.6f, 0.3f, 0.0f);
 			break;
 		case 8:
-			rs = glm::vec3(0.5f, 0.2f, 1.0f);
+			rs = glm::vec3(1.0f, 0.6f, 0.2f);
 			break;
 		case 9:
-			rs = glm::vec3(0.2f, 0.5f, 1.0f);
+			rs = glm::vec3(1.0f);
 			break;
 		default:
 			rs = glm::vec3(1.0f);
@@ -89,6 +89,8 @@ public:
 	}
 
 	void Initialize() {
+		m_LastBulletTouchIndex = -1;
+
 		GLfloat vertices[] = {
 			//Toa do dinh			//Texture			//Vector phap tuyen
 			//Bottom
@@ -171,7 +173,6 @@ public:
 
 	Box() {
 		//
-		m_LastBulletTouchIndex = -1;
 		Initialize();
 	}
 
@@ -335,6 +336,7 @@ extern Box* g_BoxMap[31][20]; //Thừa 1 hàng để preload
 extern int g_MapWidth;
 extern int g_MapHeight;
 extern int g_MapHeight_Max;
+extern int g_NumRowLoad;
 //
 extern float g_BoxSize;
 extern float g_BoxMargin;

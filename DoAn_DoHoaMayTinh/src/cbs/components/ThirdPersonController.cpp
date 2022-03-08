@@ -24,34 +24,35 @@ void ThirdPersonController::Update() {
         m_XRotation += glm::radians(g_Input.MouseOffset().y * m_MouseSensitivity);
         m_YRotation -= glm::radians(g_Input.MouseOffset().x * m_MouseSensitivity);
         //std::cout << m_XRotation << " () " << m_YRotation << std::endl;
-    } else {
-        // Rotate camera with numeric keypad
-        if (g_Input.KeyPressed(GLFW_KEY_KP_1)) {
-            // Set camera to look at front
-            m_XRotation = 0.0f;
-            m_YRotation = 0.0f;
-        } else if (g_Input.KeyPressed(GLFW_KEY_KP_3)) {
-            // Set camera to look at right
-            m_XRotation = 0.0f;
-            m_YRotation = glm::radians(90.0f);
-        } else if (g_Input.KeyPressed(GLFW_KEY_KP_7)) {
-            // Set camera to look at top
-            m_XRotation = ROTATION_LIMIT;
-            m_YRotation = 0.0f;
-        } else {
-            // Rotate
-            if (g_Input.KeyHold(GLFW_KEY_KP_2)) {
-                m_XRotation -= glm::radians(5.0f);
-            } else if (g_Input.KeyHold(GLFW_KEY_KP_8)) {
-                m_XRotation += glm::radians(5.0f);
-            }
-            if (g_Input.KeyHold(GLFW_KEY_KP_4)) {
-                m_YRotation -= glm::radians(5.0f);
-            } else if (g_Input.KeyHold(GLFW_KEY_KP_6)) {
-                m_YRotation += glm::radians(5.0f);
-            }
-        }
-    }
+    } 
+    //else {
+    //    // Rotate camera with numeric keypad
+    //    if (g_Input.KeyPressed(GLFW_KEY_KP_1)) {
+    //        // Set camera to look at front
+    //        m_XRotation = 0.0f;
+    //        m_YRotation = 0.0f;
+    //    } else if (g_Input.KeyPressed(GLFW_KEY_KP_3)) {
+    //        // Set camera to look at right
+    //        m_XRotation = 0.0f;
+    //        m_YRotation = glm::radians(90.0f);
+    //    } else if (g_Input.KeyPressed(GLFW_KEY_KP_7)) {
+    //        // Set camera to look at top
+    //        m_XRotation = ROTATION_LIMIT;
+    //        m_YRotation = 0.0f;
+    //    } else {
+    //        // Rotate
+    //        if (g_Input.KeyHold(GLFW_KEY_KP_2)) {
+    //            m_XRotation -= glm::radians(5.0f);
+    //        } else if (g_Input.KeyHold(GLFW_KEY_KP_8)) {
+    //            m_XRotation += glm::radians(5.0f);
+    //        }
+    //        if (g_Input.KeyHold(GLFW_KEY_KP_4)) {
+    //            m_YRotation -= glm::radians(5.0f);
+    //        } else if (g_Input.KeyHold(GLFW_KEY_KP_6)) {
+    //            m_YRotation += glm::radians(5.0f);
+    //        }
+    //    }
+    //}
 
     // Prevent object flip by keeping m_XRotation beetwen <-60, 60> degrees
     if (m_XRotation > ROTATION_LIMIT) {

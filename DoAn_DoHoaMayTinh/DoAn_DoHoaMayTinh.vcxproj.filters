@@ -81,9 +81,6 @@
     <ClCompile Include="src\cbs\ObjectManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\debuging\platform\win32\Win32Logger.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\rendering\Model\Mesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -139,6 +136,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\rendering\primitives\Cuboid.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\debuging\platform\win32\Win32Logger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -239,12 +239,6 @@
     <ClInclude Include="src\core\Enum.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\debuging\platform\win32\Win32Logger.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\debuging\Logger.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\rendering\Model\Mesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -314,7 +308,7 @@
     <ClInclude Include="MoveController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\gameobject\Box.h">
+    <ClInclude Include="src\core\debuging\gameobject\Box.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\rendering\primitives\Cuboid.h">
@@ -326,7 +320,19 @@
     <ClInclude Include="src\rendering\ListMaterial.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\core\debuging\gameobject\Bullet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameobject\Box.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="src\gameobject\Bullet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\debuging\platform\win32\Win32Logger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\debuging\Logger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -344,6 +350,7 @@
     <None Include="glew32.dll" />
     <None Include="glfw3.dll" />
     <None Include="resources\texts\boxmap\map_1.map" />
+    <None Include="resources\texts\boxmap\map_test.map" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="resources\fonts\times.ttf" />

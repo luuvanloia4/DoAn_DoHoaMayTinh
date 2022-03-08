@@ -6,13 +6,13 @@
 using namespace std;
 
 //GLAD
-#include<glad/glad.h>
+//#include<glad/glad.h>
 
 ////GLEW
 //#define GLEW_STATIC
 //#include <GL/glew.h>
 //GLFW
-#include <GL/glfw3.h>
+//#include <GL/glfw3.h>
 //GLM
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -106,6 +106,7 @@ int main() {
 	MyScene myScene;
 	myScene.Initialize();
 	myScene.CreateScene();
+	myScene.Preview();
 	myScene.Run();
 	myScene.Destroy();
 

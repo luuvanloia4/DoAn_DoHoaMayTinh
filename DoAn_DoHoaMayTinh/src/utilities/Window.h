@@ -2,6 +2,7 @@
 #define Window_h
 
 #pragma warning(push, 0)
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 #include <string>

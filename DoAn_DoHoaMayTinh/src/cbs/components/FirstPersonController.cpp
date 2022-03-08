@@ -18,7 +18,6 @@ void FirstPersonController::Initialize() {
 }
 
 void FirstPersonController::Update() {
-
     // Mouse
     if (!g_Input.KeyHold(GLFW_MOUSE_BUTTON_2)) {
         float rot_ver = glm::radians(g_Input.MouseOffset().y * m_MouseSensitivity);
@@ -47,48 +46,85 @@ void FirstPersonController::Update() {
         }
     }
 
-    if (g_Input.KeyReleased(GLFW_MOUSE_BUTTON_LEFT)) {
-        std::cout << "RELEASED LEFT BUTTON" << std::endl;
-        g_IsFire = true;
-        //TransformIn.Value()->AddForce(2, 0.2f, glm::vec3(1.0f, 1.0f, 1.0f)); //Đẩy lui khi bắn //Nhưng thôi k làm
-        g_RedDotSize = 0.05f;
-        //Fire in Scene->Run()
-    }
-
-    // Keyboard
-    if (g_Input.KeyHold(GLFW_KEY_LEFT_SHIFT) || g_Input.KeyHold(GLFW_KEY_RIGHT_SHIFT)) {
-        m_CurrentMovementSpeed = m_MovementSpeedFast;
-    } else {
-        m_CurrentMovementSpeed = m_MovementSpeedSlow;
-    }
-
-    glm::vec3 movement(0.0f);
-    if (g_Input.KeyHold(GLFW_KEY_W)) {
-        movement.x = -m_CurrentMovementSpeed * g_Time.DeltaTime();;
-    }
-    if (g_Input.KeyHold(GLFW_KEY_S)) {
-        movement.x = m_CurrentMovementSpeed * g_Time.DeltaTime();;
-    }
-    if (g_Input.KeyHold(GLFW_KEY_A)) {
-        movement.z = m_CurrentMovementSpeed * g_Time.DeltaTime();;
-    }
-    if (g_Input.KeyHold(GLFW_KEY_D)) {
-        movement.z = -m_CurrentMovementSpeed * g_Time.DeltaTime();;
-    }
-    TransformIn.Value()->Move(movement);
-
-    if (g_Input.KeyPressed(GLFW_KEY_SPACE)) {
-        int forceStatus = TransformIn.Value()->GetForceStatus();
-        if (forceStatus == 0) {
-            TransformIn.Value()->AddForce(1, 2.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+    if (g_IsPreview) {
+        //Chế độ preview bỏ qua mọi định luật vật lý
+        if (g_Input.KeyReleased(GLFW_MOUSE_BUTTON_LEFT)) {
+            g_RedDotSize = 0.05f;
         }
-        else if (forceStatus == 1) {
-            // Đắp bồ giăm
-            TransformIn.Value()->AddForce(1, 1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+
+        // Keyboard
+        m_CurrentMovementSpeed = m_MovementSpeedFast;
+        glm::vec3 cameraFont = g_CameraRotation * glm::vec3(1.0f, 0.0f, 0.0f);
+        glm::vec3 cameraRight = g_CameraRotation * glm::vec3(0.0f, 0.0f, 1.0f);
+        glm::vec3 movement(0.0f);
+        if (g_Input.KeyHold(GLFW_KEY_W)) {
+            movement += m_CurrentMovementSpeed * g_Time.DeltaTime() * cameraFont;
+        }
+        if (g_Input.KeyHold(GLFW_KEY_S)) {
+            movement += -m_CurrentMovementSpeed * g_Time.DeltaTime() * cameraFont;
+        }
+        if (g_Input.KeyHold(GLFW_KEY_A)) {
+            movement += -m_CurrentMovementSpeed * g_Time.DeltaTime() * cameraRight;
+        }
+        if (g_Input.KeyHold(GLFW_KEY_D)) {
+            movement += m_CurrentMovementSpeed * g_Time.DeltaTime() * cameraRight;
+        }
+
+        //std::cout << "Movement: " << movement.x << " | " << movement.y << " | " << movement.z << std::endl;
+        TransformIn.Value()->MoveWithoutRotation(movement);
+
+        //Thoát khỏi chế độ preview
+        if (g_Input.KeyPressed(GLFW_KEY_F)) {
+            g_IsPreview = false;
+        }
+    }
+    else {
+        if (g_Input.KeyReleased(GLFW_MOUSE_BUTTON_LEFT)) {
+            std::cout << "RELEASED LEFT BUTTON" << std::endl;
+            g_IsFire = true;
+            //TransformIn.Value()->AddForce(2, 0.2f, glm::vec3(1.0f, 1.0f, 1.0f)); //Đẩy lui khi bắn //Nhưng thôi k làm
+            g_RedDotSize = 0.05f;
+            //Fire in Scene->Run()
+        }
+
+        // Keyboard
+        if (g_Input.KeyHold(GLFW_KEY_LEFT_SHIFT) || g_Input.KeyHold(GLFW_KEY_RIGHT_SHIFT)) {
+            m_CurrentMovementSpeed = m_MovementSpeedFast;
         }
         else {
-            //
+            m_CurrentMovementSpeed = m_MovementSpeedSlow;
         }
+
+        glm::vec3 movement(0.0f);
+        if (g_Input.KeyHold(GLFW_KEY_W)) {
+            movement.x = -m_CurrentMovementSpeed * g_Time.DeltaTime();
+        }
+        if (g_Input.KeyHold(GLFW_KEY_S)) {
+            movement.x = m_CurrentMovementSpeed * g_Time.DeltaTime();
+        }
+        if (g_Input.KeyHold(GLFW_KEY_A)) {
+            movement.z = m_CurrentMovementSpeed * g_Time.DeltaTime();
+        }
+        if (g_Input.KeyHold(GLFW_KEY_D)) {
+            movement.z = -m_CurrentMovementSpeed * g_Time.DeltaTime();
+        }
+        TransformIn.Value()->Move(movement);
+
+        if (g_Input.KeyPressed(GLFW_KEY_SPACE)) {
+            //Chế độ preview bỏ qua mọi định luật vật lý
+            int forceStatus = TransformIn.Value()->GetForceStatus();
+            if (forceStatus == 0) {
+                TransformIn.Value()->AddForce(1, 3.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+            }
+            else if (forceStatus == 1) {
+                // Đắp bồ giăm
+                TransformIn.Value()->AddForce(1, 2.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+            }
+            else {
+                //
+            }
+        }
+
+        TransformIn.Value()->UpdateForceStatus();
     }
-    TransformIn.Value()->UpdateForceStatus();
 }

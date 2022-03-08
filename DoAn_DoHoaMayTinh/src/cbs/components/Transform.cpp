@@ -57,8 +57,15 @@ void Transform::Move(const glm::vec3& vector) {
     //Z limit
     m_Position.z = (m_Position.z < g_OffsetZ.x) ? g_OffsetZ.x : m_Position.z;
     m_Position.z = (m_Position.z > g_OffsetZ.y) ? g_OffsetZ.y : m_Position.z;
-    
+
     //std::cout << m_Position.x << " () " << m_Position.y << std::endl;
+
+    UpdateModel();
+}
+
+void Transform::MoveWithoutRotation(const glm::vec3& vector) {
+    //Chế độ preview bỏ qua mọi định luật vật lý
+    m_Position = m_Position + vector;
 
     UpdateModel();
 }

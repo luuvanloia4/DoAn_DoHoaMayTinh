@@ -28,6 +28,15 @@ void TryToKill(int posY, int posX, int typeToKill) {
     }
 }
 
+std::string ToTime(int second) {
+    int hour = second / 3600;
+    second %= 3600;
+    int minute = second / 60;
+    second %= 60;
+
+    return std::to_string(hour) + ":" + std::to_string(minute) + ":" + std::to_string(second);
+}
+
 Scene::Scene()
     : m_ObjectManager(*this) {
 }
@@ -38,13 +47,48 @@ void Scene::Initialize() {
     //m_AudioManager.Initialize();
 }
 
+void Scene::ResetGame() {
+    //
+    m_IsEndGame = false;
+    g_Score = 0;
+    m_MapOffset = 0;
+    for (int i = 0; i < g_MapHeight; i++) {
+        for (int j = 0; j < g_MapWidth; j++) {
+            if (g_BoxMap[g_MapHeight - i - 1][j] != NULL) {
+                delete g_BoxMap[g_MapHeight - i - 1][j];
+                g_BoxMap[g_MapHeight - i - 1][j] = NULL;
+            }
+            if (i < g_NumRowLoad) {
+                g_BoxMap[g_MapHeight - i - 1][j] = new Box(glm::vec3(g_OffsetFront,
+                    g_OffsetTop - i * (g_BoxSize + g_BoxMargin),
+                    g_OffsetLeft + j * (g_BoxSize + g_BoxMargin)),
+                    m_BoxType[g_MapHeight_Max - g_NumRowLoad + i][j], false);
+
+                g_BoxMap[g_MapHeight - i - 1][j]->SetSize(glm::vec3(g_BoxSize));
+            }
+        }
+    }
+
+    m_LastTimeChange = g_Time.CurrentTime();
+}
+
 void Scene::Run() {
     m_Running = true;
 
     // Initialize Time manager as close to game loop as possible
     // to avoid misrepresented delta time
     g_Time.Initialize();
-    
+    m_LastTimeChange = g_Time.CurrentTime();
+    int l_TimeMax = 300; //Second
+    int l_LastTime = g_Time.CurrentTime();
+    int l_CurTime = l_LastTime;
+    int l_TimeCount = l_TimeMax - l_CurTime;
+    //Text
+    m_TxtMessage->Position(glm::vec2(0.0f), TextRenderer::EAlign::BEGIN, TextRenderer::EAlign::BEGIN);
+    m_TxtMessage->Color(glm::vec4(1.0f));
+
+    m_DrawManager.RegisterGUIWidget(m_TxtMessage);
+
     // Game loop
     while (m_Running && !glfwWindowShouldClose(g_Window)) {
         // If frame rate is greater than limit then wait
@@ -56,6 +100,13 @@ void Scene::Run() {
         // Update global systems
         g_Time.Update();
         g_Input.Update(g_Window);
+        
+        //Time
+        l_CurTime = g_Time.CurrentTime();
+        if (l_CurTime != l_LastTime) {
+            l_LastTime = l_CurTime;
+            l_TimeCount = l_TimeMax - l_CurTime;
+        }
 
         //Fire
         if (g_IsFire) {
@@ -63,7 +114,7 @@ void Scene::Run() {
             g_BulletQueue.push_back(newBullet);
             g_BulletQueue.back()->Fire();
             g_IsFire = false;
-            int newBulletType = rand() % 3 + 1;
+            int newBulletType = rand() % 9 + 1;
             g_RedDot->m_Type = newBulletType;
             g_RedDot->m_Color = Box::GenColor(newBulletType);
             std::cout << "Bullet size: " << g_BulletQueue.size() << std::endl;
@@ -72,7 +123,7 @@ void Scene::Run() {
         //--Bullet
         for (auto bullet : g_BulletQueue) {
             if ((g_OffsetX.x > bullet->m_Position.x || -g_OffsetX.x < bullet->m_Position.x)
-                || (0.0f > bullet->m_Position.y || 200.0f < bullet->m_Position.y)
+                || (-g_OffsetY.y > bullet->m_Position.y || g_OffsetY.y < bullet->m_Position.y)
                 || (g_OffsetZ.x > bullet->m_Position.z || g_OffsetZ.y < bullet->m_Position.z)) {
                 bullet->m_Status = -1;
             }
@@ -91,9 +142,8 @@ void Scene::Run() {
                 if (g_BoxMap[i][j]) {
                     if (g_BoxMap[i][j]->m_Status == -1) {
                         TryToKill(i, j, g_BoxMap[i][j]->m_Type);
-                        system("cls");
-                        std::cout << "Score: " << g_Score << std::endl;
                         isKill = true;
+                        //l_TxtScore->Text("Score: " + to_string(g_Score));
                         break;
                     }
                 }
@@ -105,18 +155,23 @@ void Scene::Run() {
 
         if (g_Time.CurrentTime() > m_LastTimeChange + m_TimeStep) {
             //Check end game
+            bool isLocalEnd = false;
             if (!m_IsEndGame) {
                 for (int j = 0; j < g_MapWidth; j++) {
                     if (g_BoxMap[0][j] != NULL) {
                         m_IsEndGame = true;
-                        std::cout << "--------------------------------------------" << std::endl << "END GAME!" << std::endl;
+                        isLocalEnd = true;
                         break;
                     }
                 }
             }
 
-            if (!m_IsEndGame) {
+            if (!isLocalEnd) {
                 m_MapOffset++;
+                if (m_MapOffset + g_NumRowLoad > g_MapHeight_Max) {
+                    //Chạy đến sáng
+                    m_MapOffset = - g_NumRowLoad + 1;
+                }
                 for (int i = 0; i < g_MapHeight - 1; i++) {
                     for (int j = 0; j < g_MapWidth; j++) {
                         g_BoxMap[i][j] = g_BoxMap[i + 1][j];
@@ -126,10 +181,10 @@ void Scene::Run() {
                     }
                 }
                 //Load hàng tiếp theo
-                if (m_MapOffset + g_MapHeight < g_MapHeight_Max) {
+                if (m_MapOffset + g_NumRowLoad <= g_MapHeight_Max) {
                     for (int j = 0; j < g_MapWidth; j++) {
                         g_BoxMap[g_MapHeight - 1][j] = new Box(glm::vec3(g_OffsetFront, g_OffsetTop, g_OffsetLeft + j * (g_BoxSize + g_BoxMargin)),
-                            m_BoxType[m_MapOffset + g_MapHeight - 1][j], false);
+                            m_BoxType[g_MapHeight_Max - m_MapOffset - g_NumRowLoad][j], false);
                         g_BoxMap[g_MapHeight - 1][j]->SetSize(glm::vec3(g_BoxSize));
                     }
                 }
@@ -137,10 +192,21 @@ void Scene::Run() {
                 m_LastTimeChange = g_Time.CurrentTime();
                 std::cout << "-- Time: " << m_LastTimeChange << ": Box map change (offset: " << m_MapOffset << ")" << std::endl;
             }
+            else {
+                std::cout << "--------------------------------------------" << std::endl << "END GAME!" << std::endl;
+                wstring tempStr = L"Bạn đã thua với số điểm " + std::to_wstring(g_Score) + L"!!!\n => Nhấn OK để làm lại! \n => Nhấn Cancel để không làm lại!";
+                LPCWSTR str(tempStr.c_str());
+                int endSelected = MessageBox(NULL, str, TEXT("Trò chơi đoán rằng:"), MB_ICONINFORMATION | MB_OKCANCEL);
+                if (endSelected == IDOK) {
+                    ResetGame();
+                }
+            }
         }
 
         // Update managers
         //m_PhysicsManager.StepSimulation(g_Time.DeltaTime());
+        m_TxtMessage->Text("Score: " + std::to_string(g_Score) + "\nTime: " + ToTime(l_TimeCount));
+
         m_ObjectManager.ProcessFrame();
         m_DrawManager.CallDraws();
     }
@@ -278,7 +344,7 @@ void Scene::Background(const glm::vec3& background) {
 //    return m_PhysicsManager.DynamicsWorld();
 //}
 //
-//
+
 //void Scene::ListenerPosition(float x, float y, float z) {
 //    m_AudioManager.ListenerPosition(x, y, z);
 //}

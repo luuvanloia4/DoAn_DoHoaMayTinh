@@ -1,9 +1,13 @@
 ﻿#ifndef Scene_hpp
 #define Scene_hpp
 
+#include <iostream>
+#include <string>
+using namespace std;
+
 //#include "../physics/PhysicsManager.h"
 #include "../cbs/ObjectManager.h"
-#include "../rendering/DrawManager.h"
+//#include "../rendering/DrawManager.h"
 #include "../resources/ResourcesManager.h"
 //#include "../audio/AudioManager.h"
 
@@ -13,6 +17,9 @@
 
 //Game object
 #include "../gameobject/Box.h"
+
+//Text
+#include "../cbs/components/TextRenderer.h"
 
 class Scene {
 public:
@@ -37,6 +44,7 @@ public:
     void FrameRateLimit(unsigned int frame_rate);
     float FrameRateLimit() const { return m_FrameRateLimit; }
     float FrameRate() const { return 1.0f / g_Time.DeltaTime(); }
+    void ResetGame();
 
     // ObjectManager functions
     Object* CreateObject(const std::string& name);
@@ -80,10 +88,10 @@ public:
     btDynamicsWorld* DynamicsWorld();*/
 
     // AudioManager functions
-    void ListenerPosition(float x, float y, float z);
+    /*void ListenerPosition(float x, float y, float z);
     void ListenerVelocity(float x, float y, float z);
     void ListenerGain(float gain);
-    void ListenerOrientation(float at_x, float at_y, float at_z, float up_x, float up_y, float up_z);
+    void ListenerOrientation(float at_x, float at_y, float at_z, float up_x, float up_y, float up_z);*/
 
     // ResourceManager functions
     RawTexture& LoadTexture(const std::string& path);
@@ -92,20 +100,21 @@ public:
 
 protected:
     bool m_IsEndGame = false;
-    int m_BoxType[220][20];
+    int m_BoxType[230][20];
     //Draw object
     int m_MapOffset;
     float m_TimeStep; //Thời gian chờ boxmap đi xuống
     float m_LastTimeChange;
-private:
-    ObjectManager m_ObjectManager;
-    DrawManager m_DrawManager;
-    /*PhysicsManager m_PhysicsManager;
-    AudioManager m_AudioManager;*/
-    ResourcesManager m_ResourceManager;
-
+    TextRenderer* m_TxtMessage;
+    //
     bool m_Running{ false };
     float m_FrameRateLimit{ 0.0f };
+//private:
+    ObjectManager m_ObjectManager;
+    DrawManager m_DrawManager;
+    /*PhysicsManager m_PhysicsManager;*/
+    //AudioManager m_AudioManager;
+    ResourcesManager m_ResourceManager;
 };
 
 extern bool g_IsFire;

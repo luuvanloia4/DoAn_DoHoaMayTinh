@@ -34,6 +34,7 @@ void Camera::Initialize() {
 }
 
 glm::mat4 Camera::ViewMatrix() const {
+    g_CameraRotation = m_Transform->Rotation();
     glm::vec3 preObjectBottom = m_Transform->Position();
     glm::vec3 cameraPosition = preObjectBottom + g_CameraOffset;
     return glm::lookAt(cameraPosition,

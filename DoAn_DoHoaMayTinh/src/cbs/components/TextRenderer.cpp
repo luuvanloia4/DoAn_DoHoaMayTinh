@@ -1,9 +1,34 @@
 #include "TextRenderer.h"
 
+TextRenderer::TextRenderer()
+    : m_Horizontal(EAlign::NONE)
+    , m_Vertical(EAlign::NONE)
+    , m_Offset(0.0f)
+    , m_Size(300.0f)
+    , m_Color(0.0f, 0.0f, 0.0f, 1.0f) {
+    ImGuiIO& io = ImGui::GetIO();
+    m_Font = io.Fonts->AddFontDefault();
+}
+
+TextRenderer::TextRenderer(float size)
+    : m_Horizontal(EAlign::NONE)
+    , m_Vertical(EAlign::NONE)
+    , m_Offset(0.0f)
+    , m_Size(300.0f)
+    , m_Color(0.0f, 0.0f, 0.0f, 1.0f) {
+    ImGuiIO& io = ImGui::GetIO();
+    ImFontConfig config;
+    config.SizePixels = size;
+    config.OversampleH = config.OversampleV = 1;
+    config.PixelSnapH = true;
+    m_Font = io.Fonts->AddFontDefault(&config);
+}
+
 TextRenderer::TextRenderer(const std::string& font_path, float size)
     : m_Horizontal(EAlign::NONE)
     , m_Vertical(EAlign::NONE)
     , m_Offset(0.0f)
+    , m_Size(300.0f)
     , m_Color(0.0f, 0.0f, 0.0f, 1.0f) {
 
     ImGuiIO& io = ImGui::GetIO();
@@ -11,13 +36,13 @@ TextRenderer::TextRenderer(const std::string& font_path, float size)
     io.Fonts->Build();
 }
 
-void TextRenderer::Initialize() {
-    Object().Scene().RegisterGUIWidget(this);
-}
-
-void TextRenderer::Destroy() {
-    Object().Scene().UnregisterGUIWidget(this);
-}
+//void TextRenderer::Initialize() {
+//    Object().Scene().RegisterGUIWidget(this);
+//}
+//
+//void TextRenderer::Destroy() {
+//    Object().Scene().UnregisterGUIWidget(this);
+//}
 
 void TextRenderer::Draw() const {
     ImGui::Begin("dummy", nullptr, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_AlwaysAutoResize);
@@ -37,7 +62,7 @@ void TextRenderer::Draw() const {
     ImGui::SetWindowPos(ImVec2(pos.x, pos.y));
     ImGui::TextColored(ImVec4(m_Color.x, m_Color.y, m_Color.z, m_Color.w), m_Text.c_str());
 
-    ImGui::PopFont();
+    //ImGui::PopFont();
     ImGui::End();
 }
 
