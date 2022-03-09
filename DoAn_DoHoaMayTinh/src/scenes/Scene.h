@@ -35,6 +35,7 @@ public:
     void Initialize();
     virtual void PreRun() {}
     virtual void CreateScene() = 0;
+    void Preview();
     void Run();
     virtual void PostRun() {}
     void Destroy();

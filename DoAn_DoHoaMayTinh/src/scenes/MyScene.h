@@ -58,7 +58,6 @@ bool g_IsPreview;
 class MyScene : public Scene {
 public:
 	void CreateScene() override;
-    void Preview();
 };
 
 //-------------------------------------------------------------------------------------------------------------
@@ -139,10 +138,10 @@ void MyScene::CreateScene() {
     DrawPlane(wall_model, glm::vec3(0.2f, 0.2f, 0.3f));
 
     //Vách ngăn:
-    float limitHeight = 0.3f;
+    float limitHeight = 0.7f;
     float limitWidth = 10.0f;
     glm::mat4 limit_model = glm::mat4(1.0f);
-    limit_model = glm::translate(limit_model, glm::vec3(g_OffsetX.y + limitWidth / 2, limitHeight / 2, 0.0f));
+    limit_model = glm::translate(limit_model, glm::vec3(g_OffsetX.y + limitWidth / 2 + limitWidth, limitHeight / 2, 0.0f));
     limit_model = glm::scale(limit_model, glm::vec3(limitWidth, limitHeight, planeWidth));
     DrawCuboid(limit_model, glm::vec3(1.0f, 0.3f, 0.2f));
 
@@ -153,9 +152,10 @@ void MyScene::CreateScene() {
     DrawCuboid(cuboid_model, vec3(0.0f, 0.9f, 0.7f), "resources/textures/box5.jfif");
 #pragma endregion
 
+    glm::vec3 startPosition = glm::vec3(planeWidth / 2, 0.0f, 0.0f);
     //User
     auto user = CreateObject("user"); {
-        user->Root().Move(glm::vec3(planeWidth/2, 0.0f, 0.0f));
+        user->Root().Move(startPosition);
 
         //User
         auto mesh_transform = user->CreateComponent<Transform>();
@@ -210,55 +210,9 @@ void MyScene::CreateScene() {
     g_RedDot->m_Color = Box::GenColor(newBulletType);
     g_RedDot->SetSize(glm::vec3(0.05f));
 //End Game object
+    Preview();//Preview loop
+
+    startPosition.x *= -1;
+    user->Root().Position(startPosition);
+    g_IsPreview = true; //Đặt flag để chạy vòng lặp trong hàm run()
 }
-
-//-------------------------------------------------------------------------------------------------------------
-void MyScene::Preview() {
-
-    // Initialize Time manager as close to game loop as possible
-    // to avoid misrepresented delta time
-    g_Time.Initialize();
-
-    m_TxtMessage = new TextRenderer("resources/fonts/times.ttf", 25.0f);
-    m_TxtMessage->Text("Press F to Start the game!!!");
-    m_TxtMessage->Position(glm::vec2(0.0f), TextRenderer::EAlign::CENTER, TextRenderer::EAlign::CENTER);
-    m_TxtMessage->Color(glm::vec4(1.0f));
-    int timeCount = 0;
-    m_DrawManager.RegisterGUIWidget(m_TxtMessage);
-    bool isShowText = true;
-    int flashSpeed = 2;
-
-    while (g_IsPreview) {
-        // If frame rate is greater than limit then wait
-        do {
-            g_Time.Hold();
-            glfwPollEvents();
-        } while (g_Time.DeltaTime() < m_FrameRateLimit);
-
-        // Update global systems
-        g_Time.Update();
-        g_Input.Update(g_Window);
-
-        timeCount = g_Time.CurrentTime();
-        if (timeCount % flashSpeed == flashSpeed - 1) {
-            if (isShowText && timeCount + 0.5f > g_Time.CurrentTime()) {
-                m_DrawManager.UnregisterGUIWidget(m_TxtMessage);
-                isShowText = false;
-            }
-            else if(!isShowText && timeCount + 0.5f <= g_Time.CurrentTime()){
-                m_DrawManager.RegisterGUIWidget(m_TxtMessage);
-                isShowText = true;
-            }
-        }
-
-        //Draw
-        // Update managers
-        //m_PhysicsManager.StepSimulation(g_Time.DeltaTime());
-        m_ObjectManager.ProcessFrame();
-        m_DrawManager.CallDraws();
-        //g_IsPreview = false;
-    }
-    
-    //End preview
-    m_DrawManager.UnregisterGUIWidget(m_TxtMessage);
-};

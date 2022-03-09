@@ -72,22 +72,110 @@ void Scene::ResetGame() {
     m_LastTimeChange = g_Time.CurrentTime();
 }
 
+void Scene::Preview() {
+
+    // Initialize Time manager as close to game loop as possible
+    // to avoid misrepresented delta time
+    g_Time.Initialize();
+
+    m_TxtMessage = new TextRenderer("resources/fonts/times.ttf", 25.0f);
+    m_TxtMessage->Text("Press F to Start the game!!!");
+    m_TxtMessage->Position(glm::vec2(0.0f), TextRenderer::EAlign::CENTER, TextRenderer::EAlign::CENTER);
+    m_TxtMessage->Color(glm::vec4(1.0f));
+    int timeCount = 0;
+    m_DrawManager.RegisterGUIWidget(m_TxtMessage);
+    bool isShowText = true;
+    int flashSpeed = 2;
+
+    while (g_IsPreview && !glfwWindowShouldClose(g_Window)) {
+        // If frame rate is greater than limit then wait
+        do {
+            g_Time.Hold();
+            glfwPollEvents();
+        } while (g_Time.DeltaTime() < m_FrameRateLimit);
+
+        // Update global systems
+        g_Time.Update();
+        g_Input.Update(g_Window);
+
+        timeCount = g_Time.CurrentTime();
+        if (timeCount % flashSpeed == flashSpeed - 1) {
+            if (isShowText && timeCount + 0.5f > g_Time.CurrentTime()) {
+                m_DrawManager.UnregisterGUIWidget(m_TxtMessage);
+                isShowText = false;
+            }
+            else if (!isShowText && timeCount + 0.5f <= g_Time.CurrentTime()) {
+                m_DrawManager.RegisterGUIWidget(m_TxtMessage);
+                isShowText = true;
+            }
+        }
+
+        //Draw
+        // Update managers
+        //m_PhysicsManager.StepSimulation(g_Time.DeltaTime());
+        m_ObjectManager.ProcessFrame();
+        m_DrawManager.CallDraws();
+        //g_IsPreview = false;
+    }
+    //End preview
+    m_DrawManager.UnregisterGUIWidget(m_TxtMessage);
+};
+
 void Scene::Run() {
     m_Running = true;
 
     // Initialize Time manager as close to game loop as possible
     // to avoid misrepresented delta time
     g_Time.Initialize();
-    m_LastTimeChange = g_Time.CurrentTime();
-    int l_TimeMax = 300; //Second
-    int l_LastTime = g_Time.CurrentTime();
-    int l_CurTime = l_LastTime;
+    bool l_IsPreview = g_IsPreview;
+    //Preprocess
+    m_ObjectManager.ProcessFrame();
+    g_IsPreview = l_IsPreview;
+
+    float l_LastTime = g_Time.CurrentTime();
+    float l_TimeMax = 4 + l_LastTime; //Second
+    float l_CurTime = l_LastTime;
     int l_TimeCount = l_TimeMax - l_CurTime;
+
+    std::cout << "IsPreview: " << g_IsPreview << std::endl;
+    m_DrawManager.RegisterGUIWidget(m_TxtMessage);
+    if (g_IsPreview) {
+        while (l_TimeCount > -1 && !glfwWindowShouldClose(g_Window)) {
+            do {
+                g_Time.Hold();
+                glfwPollEvents();
+            } while (g_Time.DeltaTime() < m_FrameRateLimit);
+            // Update global systems
+            g_Time.Update();
+            g_Input.Update(g_Window);
+
+            l_CurTime = g_Time.CurrentTime();
+            if (l_CurTime != l_LastTime) {
+                l_LastTime = l_CurTime;
+                l_TimeCount = l_TimeMax - l_CurTime;
+                if (l_TimeCount > 0) {
+                    m_TxtMessage->Text(std::to_string(l_TimeCount));
+                }
+                else {
+                    m_TxtMessage->Text("START!!!");
+                }
+            }
+
+            m_DrawManager.CallDraws();
+        }
+        g_IsPreview = false;
+    }
+
+    //Time
+    m_LastTimeChange = g_Time.CurrentTime();
+    l_LastTime = g_Time.CurrentTime();
+    l_TimeMax = 300 + l_LastTime; //Second
+    l_CurTime = l_LastTime;
+    l_TimeCount = l_TimeMax - l_CurTime;
+    
     //Text
     m_TxtMessage->Position(glm::vec2(0.0f), TextRenderer::EAlign::BEGIN, TextRenderer::EAlign::BEGIN);
     m_TxtMessage->Color(glm::vec4(1.0f));
-
-    m_DrawManager.RegisterGUIWidget(m_TxtMessage);
 
     // Game loop
     while (m_Running && !glfwWindowShouldClose(g_Window)) {

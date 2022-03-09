@@ -106,7 +106,6 @@ int main() {
 	MyScene myScene;
 	myScene.Initialize();
 	myScene.CreateScene();
-	myScene.Preview();
 	myScene.Run();
 	myScene.Destroy();
 
