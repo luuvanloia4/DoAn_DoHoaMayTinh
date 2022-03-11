@@ -41,7 +41,7 @@ void FirstPersonController::Update() {
 
     //Fire
     if (g_Input.KeyPressed(GLFW_MOUSE_BUTTON_LEFT) || g_Input.KeyHold(GLFW_MOUSE_BUTTON_LEFT)) {
-        if (g_RedDotSize >= 0.02f) {
+        if (g_RedDotSize >= 0.01f) {
             g_RedDotSize -= g_Time.DeltaTime() * 0.03f;
         }
     }

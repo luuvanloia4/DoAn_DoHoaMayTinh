@@ -6,24 +6,24 @@
 //}
 
 //Thuat toan
-void TryToKill(int posY, int posX, int typeToKill) {
+void TryToKill(int posY, int posX, int typeToKill, int& killCount) {
     if (g_BoxMap[posY][posX] != NULL && g_BoxMap[posY][posX]->m_Type == typeToKill) {
-        g_Score++;
+        killCount++;
         delete g_BoxMap[posY][posX];
         g_BoxMap[posY][posX] = NULL;
 
         //Loang
         if (posY > 0 && g_BoxMap[posY - 1][posX] != NULL) {
-            TryToKill(posY - 1, posX, typeToKill);
+            TryToKill(posY - 1, posX, typeToKill, killCount);
         }
         if (posY < g_MapHeight - 1 && g_BoxMap[posY + 1][posX] != NULL) {
-            TryToKill(posY + 1, posX, typeToKill);
+            TryToKill(posY + 1, posX, typeToKill, killCount);
         }
         if (posX > 0 && g_BoxMap[posY][posX - 1] != NULL) {
-            TryToKill(posY, posX - 1, typeToKill);
+            TryToKill(posY, posX - 1, typeToKill, killCount);
         }
         if (posX < g_MapWidth - 1 && g_BoxMap[posY][posX + 1] != NULL) {
-            TryToKill(posY, posX + 1, typeToKill);
+            TryToKill(posY, posX + 1, typeToKill, killCount);
         }
     }
 }
@@ -72,6 +72,22 @@ void Scene::ResetGame() {
     m_LastTimeChange = g_Time.CurrentTime();
 }
 
+void Scene::GenRedDot() {
+    int newType;
+    int typeIndex = 0;
+    int l_BoxType[10];
+    for (int i = 0; i < 10; i++) {
+        if (m_BoxTypeCount[i] > 0) {
+            l_BoxType[typeIndex++] = i;
+        }
+    }
+    newType = rand() % typeIndex;
+    newType = l_BoxType[newType];
+    
+    g_RedDot->m_Type = newType;
+    g_RedDot->m_Color = Box::GenColor(newType);
+}
+
 void Scene::Preview() {
 
     // Initialize Time manager as close to game loop as possible
@@ -79,13 +95,13 @@ void Scene::Preview() {
     g_Time.Initialize();
 
     m_TxtMessage = new TextRenderer("resources/fonts/times.ttf", 25.0f);
-    m_TxtMessage->Text("Press F to Start the game!!!");
+    m_TxtMessage->Text("This is Preview mode, PRESS F to START the game!!!");
     m_TxtMessage->Position(glm::vec2(0.0f), TextRenderer::EAlign::CENTER, TextRenderer::EAlign::CENTER);
     m_TxtMessage->Color(glm::vec4(1.0f));
     int timeCount = 0;
     m_DrawManager.RegisterGUIWidget(m_TxtMessage);
     bool isShowText = true;
-    int flashSpeed = 2;
+    int flashSpeed = 1;
 
     while (g_IsPreview && !glfwWindowShouldClose(g_Window)) {
         // If frame rate is greater than limit then wait
@@ -101,11 +117,11 @@ void Scene::Preview() {
         timeCount = g_Time.CurrentTime();
         if (timeCount % flashSpeed == flashSpeed - 1) {
             if (isShowText && timeCount + 0.5f > g_Time.CurrentTime()) {
-                m_DrawManager.UnregisterGUIWidget(m_TxtMessage);
+                m_TxtMessage->Color(glm::vec4(0.5f, 0.5f, 0.5f, 0.5f));
                 isShowText = false;
             }
             else if (!isShowText && timeCount + 0.5f <= g_Time.CurrentTime()) {
-                m_DrawManager.RegisterGUIWidget(m_TxtMessage);
+                m_TxtMessage->Color(glm::vec4(1.0f));
                 isShowText = true;
             }
         }
@@ -169,7 +185,7 @@ void Scene::Run() {
     //Time
     m_LastTimeChange = g_Time.CurrentTime();
     l_LastTime = g_Time.CurrentTime();
-    l_TimeMax = 300 + l_LastTime; //Second
+    l_TimeMax = m_LimitTime + l_LastTime; //Second
     l_CurTime = l_LastTime;
     l_TimeCount = l_TimeMax - l_CurTime;
     
@@ -202,19 +218,36 @@ void Scene::Run() {
             g_BulletQueue.push_back(newBullet);
             g_BulletQueue.back()->Fire();
             g_IsFire = false;
-            int newBulletType = rand() % 9 + 1;
-            g_RedDot->m_Type = newBulletType;
-            g_RedDot->m_Color = Box::GenColor(newBulletType);
+            GenRedDot();
             std::cout << "Bullet size: " << g_BulletQueue.size() << std::endl;
         }
 
         //--Bullet
         for (auto bullet : g_BulletQueue) {
-            if ((g_OffsetX.x > bullet->m_Position.x || -g_OffsetX.x < bullet->m_Position.x)
-                || (-g_OffsetY.y > bullet->m_Position.y || g_OffsetY.y < bullet->m_Position.y)
-                || (g_OffsetZ.x > bullet->m_Position.z || g_OffsetZ.y < bullet->m_Position.z)) {
-                bullet->m_Status = -1;
+            if (bullet->m_Status != -1) {
+                if (-g_OffsetX.x + 50.0f < bullet->m_Position.x) {
+                    bullet->m_Status = -1;
+                    if (g_Score > 0) {
+                        g_Score--;
+                    }
+                }
+                else {
+                    //Nảy nảy
+                    if (g_OffsetX.x > bullet->m_Position.x && bullet->m_Direction.x < 0) {
+                        bullet->m_Direction.x *= -1;
+                        bullet->m_Status++;
+                    }
+                    if ((g_OffsetY.x > bullet->m_Position.y && bullet->m_Direction.y < 0) || (g_OffsetY.y < bullet->m_Position.y && bullet->m_Direction.y > 0)) {
+                        bullet->m_Direction.y *= -1;
+                        bullet->m_Status++;
+                    }
+                    if((g_OffsetZ.x > bullet->m_Position.z && bullet->m_Direction.z < 0) || (g_OffsetZ.y < bullet->m_Position.z && bullet->m_Direction.z > 0)){
+                        bullet->m_Direction.z *= -1;
+                        bullet->m_Status++;
+                    }
+                }
             }
+            
             if (bullet->m_Status == -1) {
                 auto to_erase = std::find(g_BulletQueue.begin(), g_BulletQueue.end(), bullet);
                 if (to_erase != g_BulletQueue.end()) {
@@ -224,12 +257,20 @@ void Scene::Run() {
         }
 
         //--BoxMap
+        int factor = 1;
+        int killCount = 0;
+        int killType = 0;
+        bool isKill = false;
         for (int i = 0; i < g_MapHeight; i++) {
-            bool isKill = false;
             for (int j = 0; j < g_MapWidth; j++) {
                 if (g_BoxMap[i][j]) {
                     if (g_BoxMap[i][j]->m_Status == -1) {
-                        TryToKill(i, j, g_BoxMap[i][j]->m_Type);
+                        factor = g_BoxMap[i][j]->m_Factor;
+                        killType = g_BoxMap[i][j]->m_Type;
+                        killCount = 0;
+                        TryToKill(i, j, g_BoxMap[i][j]->m_Type, killCount);
+                        g_Score += killCount * factor;
+                        m_BoxTypeCount[killType] -= killCount;
                         isKill = true;
                         //l_TxtScore->Text("Score: " + to_string(g_Score));
                         break;
@@ -241,9 +282,9 @@ void Scene::Run() {
             }
         }
 
+        bool isLocalEnd = l_TimeCount <= 0;
         if (g_Time.CurrentTime() > m_LastTimeChange + m_TimeStep) {
             //Check end game
-            bool isLocalEnd = false;
             if (!m_IsEndGame) {
                 for (int j = 0; j < g_MapWidth; j++) {
                     if (g_BoxMap[0][j] != NULL) {
@@ -269,25 +310,32 @@ void Scene::Run() {
                     }
                 }
                 //Load hàng tiếp theo
+                int curType;
                 if (m_MapOffset + g_NumRowLoad <= g_MapHeight_Max) {
                     for (int j = 0; j < g_MapWidth; j++) {
+                        curType = m_BoxType[g_MapHeight_Max - m_MapOffset - g_NumRowLoad][j];
                         g_BoxMap[g_MapHeight - 1][j] = new Box(glm::vec3(g_OffsetFront, g_OffsetTop, g_OffsetLeft + j * (g_BoxSize + g_BoxMargin)),
-                            m_BoxType[g_MapHeight_Max - m_MapOffset - g_NumRowLoad][j], false);
+                            curType, false);
                         g_BoxMap[g_MapHeight - 1][j]->SetSize(glm::vec3(g_BoxSize));
+                        m_BoxTypeCount[curType]++;
                     }
                 }
 
                 m_LastTimeChange = g_Time.CurrentTime();
                 std::cout << "-- Time: " << m_LastTimeChange << ": Box map change (offset: " << m_MapOffset << ")" << std::endl;
             }
+        }
+
+        if (isLocalEnd) {
+            std::cout << "--------------------------------------------" << std::endl << "END GAME!" << std::endl;
+            wstring tempStr = L"Bạn đã thua với số điểm " + std::to_wstring(g_Score) + L"!!!\n => Nhấn OK để làm lại! \n => Nhấn Cancel để không làm lại!";
+            LPCWSTR str(tempStr.c_str());
+            int endSelected = MessageBox(NULL, str, TEXT("Trò chơi đoán rằng:"), MB_ICONINFORMATION | MB_OKCANCEL);
+            if (endSelected == IDOK) {
+                ResetGame();
+            }
             else {
-                std::cout << "--------------------------------------------" << std::endl << "END GAME!" << std::endl;
-                wstring tempStr = L"Bạn đã thua với số điểm " + std::to_wstring(g_Score) + L"!!!\n => Nhấn OK để làm lại! \n => Nhấn Cancel để không làm lại!";
-                LPCWSTR str(tempStr.c_str());
-                int endSelected = MessageBox(NULL, str, TEXT("Trò chơi đoán rằng:"), MB_ICONINFORMATION | MB_OKCANCEL);
-                if (endSelected == IDOK) {
-                    ResetGame();
-                }
+                //Exit();
             }
         }
 

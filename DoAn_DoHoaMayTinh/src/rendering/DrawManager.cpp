@@ -148,13 +148,16 @@ void DrawManager::CallDraws() {
     auto& pure_color_shader = m_ShaderPrograms[static_cast<size_t>(EShaderType::PureColor)];
     pure_color_shader.Use();
 
-    if (g_RedDotSize >= 0.04f) {
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    if (!g_IsPreview) {
+        if (g_RedDotSize >= 0.04f) {
+            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        }
+        else {
+            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+        }
+        g_RedDot->Draw(pure_color_shader);
     }
-    else {
-        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    }
-    g_RedDot->Draw(pure_color_shader);
+    
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     for (auto bullet : g_BulletQueue) {

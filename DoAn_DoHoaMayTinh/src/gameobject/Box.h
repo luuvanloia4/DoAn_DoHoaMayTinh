@@ -38,6 +38,7 @@ public:
 	bool m_IsSpecial;
 	int m_Status;
 	int m_Type;
+	int m_Factor; //Hệ số điểm : tăng theo số lần nảy của viên đạn
 	int m_LastBulletTouchIndex;
 
 	static glm::vec3 GenColor(int type) {
@@ -89,7 +90,17 @@ public:
 	}
 
 	void Initialize() {
-		m_LastBulletTouchIndex = -1;
+		//Vat ly:
+		m_IsGravity = false;
+		m_Weight = 1.0f;
+		m_IsRoll = false;
+		m_RollSpeed = 45.0f;
+
+		//Game
+		m_IsSpecial = false;
+		m_Status = 0;
+		m_Factor = 1;
+		m_LastBulletTouchIndex = -1; //Chạm nhau 1 lần thôi là đủ r
 
 		GLfloat vertices[] = {
 			//Toa do dinh			//Texture			//Vector phap tuyen
@@ -192,17 +203,6 @@ public:
 		m_Model = glm::translate(m_Model, m_Position);
 		m_Size = glm::vec3(1.0f);
 
-		//Vat ly:
-		m_IsGravity = false;
-		m_Weight = 1.0f;
-		m_IsRoll = false;
-		m_RollSpeed = 45.0f;
-
-		//Game
-		m_IsSpecial = false;
-		m_Status = 0;
-		m_Type = 1;
-
 		//Khởi tạo hình vuông
 		Initialize();
 		ListMaterial listMaterial;
@@ -223,13 +223,8 @@ public:
 		m_Model = glm::mat4(1.0f);
 		m_Model = glm::translate(m_Model, m_Position);
 		m_Size = glm::vec3(1.0f);
-
-		//Vat ly:
-		m_IsGravity = false;
-		m_Weight = 1.0f;
-		m_IsRoll = false;
-		m_RollSpeed = 45.0f;
-
+		//Game
+		m_Type = type;
 		//Khởi tạo hình vuông
 		Initialize();
 		ListMaterial listMaterial;
@@ -257,6 +252,7 @@ public:
 					m_LastBulletTouchIndex = bullet->m_Index;
 
 					if (m_Type == bullet->m_Type) {
+						m_Factor = bullet->m_Status;
 						m_Status = -1;
 					}
 					else {

@@ -46,55 +46,137 @@ public:
 	int m_Status;
 	int m_Type;
 	int m_Index;
+	bool m_IsRedDot = false;
 
 	//Set default Initialize
 	void Initialize() {
 		m_Index = g_BulletCount++;
+
 		GLfloat vertices[] = {
 			//Toa do dinh			//Texture			//Vector phap tuyen
 			//Bottom
-			-0.5f, -0.5f, -0.5f,	0.0f, 0.0f,			0.0f, -1.0f, 0.0f,
-			0.5f, -0.5f, -0.5f,		1.0f, 0.0f,			0.0f, -1.0f, 0.0f,
-			0.5f, -0.5f, 0.5f,		1.0f, 1.0f,			0.0f, -1.0f, 0.0f,
-			0.5f, -0.5f, 0.5f,		1.0f, 1.0f,			0.0f, -1.0f, 0.0f,
-			-0.5f, -0.5f, 0.5f,		0.0f, 1.0f,			0.0f, -1.0f, 0.0f,
-			-0.5f, -0.5f, -0.5f,	0.0f, 0.0f,			0.0f, -1.0f, 0.0f,
+			0.0f, -0.5f, -0.5f,		0.0f, 0.0f,			0.0f, -1.0f, 0.0f,
+			0.5f, -0.5f, 0.0f,		1.0f, 0.0f,			0.0f, -1.0f, 0.0f,
+			0.0f, -0.5f, 0.5f,		1.0f, 1.0f,			0.0f, -1.0f, 0.0f,
+			0.0f, -0.5f, 0.5f,		1.0f, 1.0f,			0.0f, -1.0f, 0.0f,
+			-0.5f, -0.5f, 0.0f,		0.0f, 1.0f,			0.0f, -1.0f, 0.0f,
+			0.0f, -0.5f, -0.5f,		0.0f, 0.0f,			0.0f, -1.0f, 0.0f,
 			//Top
-			-0.5f, 0.5f, -0.5f,		0.0f, 0.0f,			0.0f, 1.0f, 0.0f,
-			0.5f, 0.5f, -0.5f,		1.0f, 0.0f,			0.0f, 1.0f, 0.0f,
-			0.5f, 0.5f, 0.5f,		1.0f, 1.0f,			0.0f, 1.0f, 0.0f,
-			0.5f, 0.5f, 0.5f,		1.0f, 1.0f,			0.0f, 1.0f, 0.0f,
-			-0.5f, 0.5f, 0.5f,		0.0f, 1.0f,			0.0f, 1.0f, 0.0f,
-			-0.5f, 0.5f, -0.5f,		0.0f, 0.0f,			0.0f, 1.0f, 0.0f,
+			0.0f, 0.5f, -0.5f,		0.0f, 0.0f,			0.0f, 1.0f, 0.0f,
+			0.5f, 0.5f, 0.0f,		1.0f, 0.0f,			0.0f, 1.0f, 0.0f,
+			0.0f, 0.5f, 0.5f,		1.0f, 1.0f,			0.0f, 1.0f, 0.0f,
+			0.0f, 0.5f, 0.5f,		1.0f, 1.0f,			0.0f, 1.0f, 0.0f,
+			-0.5f, 0.5f, 0.0f,		0.0f, 1.0f,			0.0f, 1.0f, 0.0f,
+			0.0f, 0.5f, -0.5f,		0.0f, 0.0f,			0.0f, 1.0f, 0.0f,
 			//Left
-			-0.5f, -0.5f, -0.5f,	0.0f, 0.0f,			-1.0f, 0.0f, 0.0f,
-			-0.5f, 0.5f, -0.5f,		1.0f, 0.0f,			-1.0f, 0.0f, 0.0f,
-			-0.5f, 0.5f, 0.5f,		1.0f, 1.0f,			-1.0f, 0.0f, 0.0f,
-			-0.5f, 0.5f, 0.5f,		1.0f, 1.0f,			-1.0f, 0.0f, 0.0f,
-			-0.5f, -0.5f, 0.5f,		0.0f, 1.0f,			-1.0f, 0.0f, 0.0f,
-			-0.5f, -0.5f, -0.5f,	0.0f, 0.0f,			-1.0f, 0.0f, 0.0f,
+			-0.5f, -0.5f, 0.0f,		0.0f, 0.0f,			-1.0f, 0.0f, 0.0f,
+			-0.5f, 0.0f, -0.5f,		1.0f, 0.0f,			-1.0f, 0.0f, 0.0f,
+			-0.5f, 0.5f, 0.0f,		1.0f, 1.0f,			-1.0f, 0.0f, 0.0f,
+			-0.5f, 0.5f, 0.0f,		1.0f, 1.0f,			-1.0f, 0.0f, 0.0f,
+			-0.5f, 0.0f, 0.5f,		0.0f, 1.0f,			-1.0f, 0.0f, 0.0f,
+			-0.5f, -0.5f, 0.0f,		0.0f, 0.0f,			-1.0f, 0.0f, 0.0f,
 			//Right
-			0.5f, -0.5f, -0.5f,		0.0f, 0.0f,			1.0f, 0.0f, 0.0f,
-			0.5f, 0.5f, -0.5f,		1.0f, 0.0f,			1.0f, 0.0f, 0.0f,
-			0.5f, 0.5f, 0.5f,		1.0f, 1.0f,			1.0f, 0.0f, 0.0f,
-			0.5f, 0.5f, 0.5f,		1.0f, 1.0f,			1.0f, 0.0f, 0.0f,
-			0.5f, -0.5f, 0.5f,		0.0f, 1.0f,			1.0f, 0.0f, 0.0f,
-			0.5f, -0.5f, -0.5f,		0.0f, 0.0f,			1.0f, 0.0f, 0.0f,
+			0.5f, -0.5f, 0.0f,		0.0f, 0.0f,			1.0f, 0.0f, 0.0f,
+			0.5f, 0.0f, -0.5f,		1.0f, 0.0f,			1.0f, 0.0f, 0.0f,
+			0.5f, 0.5f, 0.0f,		1.0f, 1.0f,			1.0f, 0.0f, 0.0f,
+			0.5f, 0.5f, 0.0f,		1.0f, 1.0f,			1.0f, 0.0f, 0.0f,
+			0.5f, 0.0f, 0.5f,		0.0f, 1.0f,			1.0f, 0.0f, 0.0f,
+			0.5f, -0.5f, 0.0f,		0.0f, 0.0f,			1.0f, 0.0f, 0.0f,
 			//Back
-			-0.5f, -0.5f, -0.5f,	0.0f, 0.0f,			0.0f, 0.0f, -1.0f,
-			0.5f, -0.5f, -0.5f,		1.0f, 0.0f,			0.0f, 0.0f, -1.0f,
-			0.5f, 0.5f, -0.5f,		1.0f, 1.0f,			0.0f, 0.0f, -1.0f,
-			0.5f, 0.5f, -0.5f,		1.0f, 1.0f,			0.0f, 0.0f, -1.0f,
-			-0.5f, 0.5f, -0.5f,		0.0f, 1.0f,			0.0f, 0.0f, -1.0f,
-			-0.5f, -0.5f, -0.5f,	0.0f, 0.0f,			0.0f, 0.0f, -1.0f,
+			0.0f, -0.5f, -0.5f,		0.0f, 0.0f,			0.0f, 0.0f, -1.0f,
+			0.5f, 0.0f, -0.5f,		1.0f, 0.0f,			0.0f, 0.0f, -1.0f,
+			0.0f, 0.5f, -0.5f,		1.0f, 1.0f,			0.0f, 0.0f, -1.0f,
+			0.0f, 0.5f, -0.5f,		1.0f, 1.0f,			0.0f, 0.0f, -1.0f,
+			-0.5f, 0.0f, -0.5f,		0.0f, 1.0f,			0.0f, 0.0f, -1.0f,
+			0.0f, -0.5f, -0.5f,		0.0f, 0.0f,			0.0f, 0.0f, -1.0f,
 			//Front
-			-0.5f, -0.5f, 0.5f,		0.0f, 0.0f,			0.0f, 0.0f, 1.0f,
-			0.5f, -0.5f, 0.5f,		1.0f, 0.0f,			0.0f, 0.0f, 1.0f,
-			0.5f, 0.5f, 0.5f,		1.0f, 1.0f,			0.0f, 0.0f, 1.0f,
-			0.5f, 0.5f, 0.5f,		1.0f, 1.0f,			0.0f, 0.0f, 1.0f,
-			-0.5f, 0.5f, 0.5f,		0.0f, 1.0f,			0.0f, 0.0f, 1.0f,
-			-0.5f, -0.5f, 0.5f,		0.0f, 0.0f,			0.0f, 0.0f, 1.0f
+			0.0f, -0.5f, 0.5f,		0.0f, 0.0f,			0.0f, 0.0f, 1.0f,
+			0.5f, 0.0f, 0.5f,		1.0f, 0.0f,			0.0f, 0.0f, 1.0f,
+			0.0f, 0.5f, 0.5f,		1.0f, 1.0f,			0.0f, 0.0f, 1.0f,
+			0.0f, 0.5f, 0.5f,		1.0f, 1.0f,			0.0f, 0.0f, 1.0f,
+			-0.5f, 0.0f, 0.5f,		0.0f, 1.0f,			0.0f, 0.0f, 1.0f,
+			0.0f, -0.5f, 0.5f,		0.0f, 0.0f,			0.0f, 0.0f, 1.0f,
+			//Triangle bottom
+			//Goc phan tu thu 1
+			0.0f, -0.5f, -0.5f,		0.0f, 0.0f,			1.0f, -1.0f, -1.0f,
+			0.5f, -0.5f, 0.0f,		1.0f, 0.0f,			1.0f, -1.0f, -1.0f,
+			0.5f, 0.0f, -0.5f,		0.5f, 1.0f,			1.0f, -1.0f, -1.0f,
+			//Goc phan tu thu 2
+			0.0f, -0.5f, -0.5f,		0.0f, 0.0f,			-1.0f, -1.0f, -1.0f,
+			-0.5f, -0.5f, 0.0f,		1.0f, 0.0f,			-1.0f, -1.0f, -1.0f,
+			-0.5f, 0.0f, -0.5f,		0.5f, 1.0f,			-1.0f, -1.0f, -1.0f,
+			//Goc phan tu thu 3
+			0.0f, -0.5f, 0.5f,		0.0f, 0.0f,			-1.0f, -1.0f, 1.0f,
+			-0.5f, -0.5f, 0.0f,		1.0f, 0.0f,			-1.0f, -1.0f, 1.0f,
+			-0.5f, 0.0f, 0.5f,		0.5f, 1.0f,			-1.0f, -1.0f, 1.0f,
+			//Goc phan tu thu 4
+			0.0f, -0.5f, 0.5f,		0.0f, 0.0f,			1.0f, -1.0f, 1.0f,
+			0.5f, -0.5f, 0.0f,		1.0f, 0.0f,			1.0f, -1.0f, 1.0f,
+			0.5f, 0.0f, 0.5f,		0.5f, 1.0f,			1.0f, -1.0f, 1.0f,
+			//Triangle top
+			//Goc phan tu thu 1
+			0.0f, 0.5f, -0.5f,		0.0f, 0.0f,			1.0f, 1.0f, -1.0f,
+			0.5f, 0.5f, 0.0f,		1.0f, 0.0f,			1.0f, 1.0f, -1.0f,
+			0.5f, 0.0f, -0.5f,		0.5f, 1.0f,			1.0f, 1.0f, -1.0f,
+			//Goc phan tu thu 2
+			0.0f, 0.5f, -0.5f,		0.0f, 0.0f,			-1.0f, 1.0f, -1.0f,
+			-0.5f, 0.5f, 0.0f,		1.0f, 0.0f,			-1.0f, 1.0f, -1.0f,
+			-0.5f, 0.0f, -0.5f,		0.5f, 1.0f,			-1.0f, 1.0f, -1.0f,
+			//Goc phan tu thu 3
+			0.0f, 0.5f, 0.5f,		0.0f, 0.0f,			-1.0f, 1.0f, 1.0f,
+			-0.5f, 0.5f, 0.0f,		1.0f, 0.0f,			-1.0f, 1.0f, 1.0f,
+			-0.5f, 0.0f, 0.5f,		0.5f, 1.0f,			-1.0f, 1.0f, 1.0f,
+			//Goc phan tu thu 4
+			0.0f, 0.5f, 0.5f,		0.0f, 0.0f,			1.0f, 1.0f, 1.0f,
+			0.5f, 0.5f, 0.0f,		1.0f, 0.0f,			1.0f, 1.0f, 1.0f,
+			0.5f, 0.0f, 0.5f,		0.5f, 1.0f,			1.0f, 1.0f, 1.0f
 		};
+
+		//GLfloat vertices[] = {
+		//	//Toa do dinh			//Texture			//Vector phap tuyen
+		//	//Bottom
+		//	-0.5f, -0.5f, -0.5f,	0.0f, 0.0f,			0.0f, -1.0f, 0.0f,
+		//	0.5f, -0.5f, -0.5f,		1.0f, 0.0f,			0.0f, -1.0f, 0.0f,
+		//	0.5f, -0.5f, 0.5f,		1.0f, 1.0f,			0.0f, -1.0f, 0.0f,
+		//	0.5f, -0.5f, 0.5f,		1.0f, 1.0f,			0.0f, -1.0f, 0.0f,
+		//	-0.5f, -0.5f, 0.5f,		0.0f, 1.0f,			0.0f, -1.0f, 0.0f,
+		//	-0.5f, -0.5f, -0.5f,	0.0f, 0.0f,			0.0f, -1.0f, 0.0f,
+		//	//Top
+		//	-0.5f, 0.5f, -0.5f,		0.0f, 0.0f,			0.0f, 1.0f, 0.0f,
+		//	0.5f, 0.5f, -0.5f,		1.0f, 0.0f,			0.0f, 1.0f, 0.0f,
+		//	0.5f, 0.5f, 0.5f,		1.0f, 1.0f,			0.0f, 1.0f, 0.0f,
+		//	0.5f, 0.5f, 0.5f,		1.0f, 1.0f,			0.0f, 1.0f, 0.0f,
+		//	-0.5f, 0.5f, 0.5f,		0.0f, 1.0f,			0.0f, 1.0f, 0.0f,
+		//	-0.5f, 0.5f, -0.5f,		0.0f, 0.0f,			0.0f, 1.0f, 0.0f,
+		//	//Left
+		//	-0.5f, -0.5f, -0.5f,	0.0f, 0.0f,			-1.0f, 0.0f, 0.0f,
+		//	-0.5f, 0.5f, -0.5f,		1.0f, 0.0f,			-1.0f, 0.0f, 0.0f,
+		//	-0.5f, 0.5f, 0.5f,		1.0f, 1.0f,			-1.0f, 0.0f, 0.0f,
+		//	-0.5f, 0.5f, 0.5f,		1.0f, 1.0f,			-1.0f, 0.0f, 0.0f,
+		//	-0.5f, -0.5f, 0.5f,		0.0f, 1.0f,			-1.0f, 0.0f, 0.0f,
+		//	-0.5f, -0.5f, -0.5f,	0.0f, 0.0f,			-1.0f, 0.0f, 0.0f,
+		//	//Right
+		//	0.5f, -0.5f, -0.5f,		0.0f, 0.0f,			1.0f, 0.0f, 0.0f,
+		//	0.5f, 0.5f, -0.5f,		1.0f, 0.0f,			1.0f, 0.0f, 0.0f,
+		//	0.5f, 0.5f, 0.5f,		1.0f, 1.0f,			1.0f, 0.0f, 0.0f,
+		//	0.5f, 0.5f, 0.5f,		1.0f, 1.0f,			1.0f, 0.0f, 0.0f,
+		//	0.5f, -0.5f, 0.5f,		0.0f, 1.0f,			1.0f, 0.0f, 0.0f,
+		//	0.5f, -0.5f, -0.5f,		0.0f, 0.0f,			1.0f, 0.0f, 0.0f,
+		//	//Back
+		//	-0.5f, -0.5f, -0.5f,	0.0f, 0.0f,			0.0f, 0.0f, -1.0f,
+		//	0.5f, -0.5f, -0.5f,		1.0f, 0.0f,			0.0f, 0.0f, -1.0f,
+		//	0.5f, 0.5f, -0.5f,		1.0f, 1.0f,			0.0f, 0.0f, -1.0f,
+		//	0.5f, 0.5f, -0.5f,		1.0f, 1.0f,			0.0f, 0.0f, -1.0f,
+		//	-0.5f, 0.5f, -0.5f,		0.0f, 1.0f,			0.0f, 0.0f, -1.0f,
+		//	-0.5f, -0.5f, -0.5f,	0.0f, 0.0f,			0.0f, 0.0f, -1.0f,
+		//	//Front
+		//	-0.5f, -0.5f, 0.5f,		0.0f, 0.0f,			0.0f, 0.0f, 1.0f,
+		//	0.5f, -0.5f, 0.5f,		1.0f, 0.0f,			0.0f, 0.0f, 1.0f,
+		//	0.5f, 0.5f, 0.5f,		1.0f, 1.0f,			0.0f, 0.0f, 1.0f,
+		//	0.5f, 0.5f, 0.5f,		1.0f, 1.0f,			0.0f, 0.0f, 1.0f,
+		//	-0.5f, 0.5f, 0.5f,		0.0f, 1.0f,			0.0f, 0.0f, 1.0f,
+		//	-0.5f, -0.5f, 0.5f,		0.0f, 0.0f,			0.0f, 0.0f, 1.0f
+		//};
 
 		/*GLint drawIndex[] = {
 			0, 1, 2, 0, 3, 2,
@@ -155,14 +237,14 @@ public:
 		m_IsGravity = false;
 		m_Weight = 1.0f;
 		m_IsRoll = false;
-		m_RollSpeed = 15.0f;
+		m_RollSpeed = 360.0f;
 		m_Direction = glm::vec3(0.0f);
 		m_IsFly = false;
 		m_FlySpeed = 5.0f;
 
 		//Game
 		m_IsSpecial = false;
-		m_Status = 0;
+		m_Status = 1;
 		m_Type = 1;
 
 		//Khởi tạo hình vuông
@@ -194,7 +276,7 @@ public:
 		m_FlySpeed = 2.0f;
 		//Game
 		m_IsSpecial = oldBullet->m_IsSpecial;
-		m_Status = 0;
+		m_Status = 1;
 		m_Type = oldBullet->m_Type;
 		//Khoi tao
 		Initialize();
@@ -225,12 +307,19 @@ public:
 			m_Position = glm::vec3(m_Model * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
 		}
 		else {
-			m_Angle.x += (360.0f * g_Time.DeltaTime() * 0.05f / g_RedDotSize);
-			m_Angle.y += (240.0f * g_Time.DeltaTime() * 0.05f / g_RedDotSize);
-			m_Angle.z += (360.0f * g_Time.DeltaTime() * 0.05f / g_RedDotSize);
-			m_Model = glm::rotate(m_Model, glm::radians(m_Angle.x), glm::vec3(5.0f, 0.0f, 0.0f));
-			//m_Model = glm::rotate(m_Model, glm::radians(m_Angle.y), glm::vec3(0.0f, 1.0f, 0.0f));
-			m_Model = glm::rotate(m_Model, glm::radians(m_Angle.z), glm::vec3(0.0f, 0.0f, 5.0f));
+			if (m_IsRedDot) {
+				//Do reddot update position và dir liên tục => model tính lại liên tục nên muốn quay thì phải lưu lại góc quay trước đó
+				//Chưa tối ưu lắm
+				m_Angle.x += (360.0f * g_Time.DeltaTime() * 0.05f / g_RedDotSize);
+				m_Angle.z += (350.0f * g_Time.DeltaTime() * 0.05f / g_RedDotSize);
+				m_Model = glm::rotate(m_Model, glm::radians(m_Angle.x), glm::vec3(1.0f, 0.0f, 0.0f));
+				//m_Model = glm::rotate(m_Model, glm::radians(m_Angle.y), glm::vec3(0.0f, 1.0f, 0.0f));
+				m_Model = glm::rotate(m_Model, glm::radians(m_Angle.z), glm::vec3(0.0f, 0.0f, 1.0f));
+			}
+			else {
+				float l_Rollspeed = m_RollSpeed * g_Time.DeltaTime();
+				m_Model = glm::rotate(m_Model, glm::radians(l_Rollspeed), glm::vec3(1.0f, 1.0f, 1.0f));
+			}
 		}
 
 		glm::mat4 processModel = glm::transpose(glm::inverse(m_Model));
@@ -238,7 +327,7 @@ public:
 		shader.Uniform("model", m_Model);
 
 		glBindVertexArray(m_VAO);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
+		glDrawArrays(GL_TRIANGLES, 0, 60);
 		glBindVertexArray(0);
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
@@ -277,6 +366,18 @@ public:
 
 	void SetMaterial(Material material) {
 		m_Material = material;
+	}
+
+	void MoveTo(glm::vec3 pos) {
+		m_Position = pos;
+		m_Model = glm::mat4(1.0f);
+		m_Model = glm::translate(m_Model, m_Position);
+		m_Model = glm::scale(m_Model, m_Size);
+	}
+	
+	void Move(glm::vec3 vec) {
+		m_Model = glm::translate(m_Model, vec);
+		m_Position = glm::vec3(m_Model * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
 	}
 
 	//Events

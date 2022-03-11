@@ -116,6 +116,7 @@
     <ClInclude Include="src\utilities\Input.h" />
     <ClInclude Include="src\utilities\Time.h" />
     <ClInclude Include="src\utilities\Window.h" />
+    <ClInclude Include="src\scenes\TestScene.h" />
     <ClInclude Include="ThuVien\include\AL\alut.h" />
     <ClInclude Include="ThuVien\include\dependencies\imgui\imconfig.h" />
     <ClInclude Include="ThuVien\include\dependencies\imgui\imgui.h" />
