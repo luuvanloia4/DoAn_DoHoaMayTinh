@@ -41,8 +41,8 @@ void FirstPersonController::Update() {
 
     //Fire
     if (g_Input.KeyPressed(GLFW_MOUSE_BUTTON_LEFT) || g_Input.KeyHold(GLFW_MOUSE_BUTTON_LEFT)) {
-        if (g_RedDotSize >= 0.01f) {
-            g_RedDotSize -= g_Time.DeltaTime() * 0.03f;
+        if (g_RedDotSize >= 0.03f) {
+            g_RedDotSize -= g_Time.DeltaTime() * 0.02f;
         }
     }
 
@@ -53,7 +53,7 @@ void FirstPersonController::Update() {
         }
 
         // Keyboard
-        m_CurrentMovementSpeed = m_MovementSpeedFast;
+        m_CurrentMovementSpeed = m_MovementSpeedFast * 3 / 2;
         glm::vec3 cameraFont = g_CameraRotation * glm::vec3(1.0f, 0.0f, 0.0f);
         glm::vec3 cameraRight = g_CameraRotation * glm::vec3(0.0f, 0.0f, 1.0f);
         glm::vec3 movement(0.0f);
@@ -83,7 +83,6 @@ void FirstPersonController::Update() {
             std::cout << "RELEASED LEFT BUTTON" << std::endl;
             g_IsFire = true;
             //TransformIn.Value()->AddForce(2, 0.2f, glm::vec3(1.0f, 1.0f, 1.0f)); //Đẩy lui khi bắn //Nhưng thôi k làm
-            g_RedDotSize = 0.05f;
             //Fire in Scene->Run()
         }
 

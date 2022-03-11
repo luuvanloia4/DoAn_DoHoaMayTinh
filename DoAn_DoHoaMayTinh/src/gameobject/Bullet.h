@@ -240,7 +240,7 @@ public:
 		m_RollSpeed = 360.0f;
 		m_Direction = glm::vec3(0.0f);
 		m_IsFly = false;
-		m_FlySpeed = 5.0f;
+		m_FlySpeed = 2.5f;
 
 		//Game
 		m_IsSpecial = false;
@@ -262,7 +262,7 @@ public:
 		}
 		//Position
 		m_Position = oldBullet->m_Position;
-		m_Size = glm::vec3(4.0f);
+		m_Size = glm::vec3(6.0f);
 		m_Angle = glm::vec3(0.0f);
 		m_Model = glm::translate(glm::mat4(1.0f), m_Position);
 		m_Model = glm::scale(m_Model, m_Size);
@@ -273,7 +273,7 @@ public:
 		m_RollSpeed = 15.0f;
 		m_Direction = oldBullet->m_Direction;
 		m_IsFly = true;
-		m_FlySpeed = 3.0f;
+		m_FlySpeed = oldBullet->m_FlySpeed;
 		//Game
 		m_IsSpecial = oldBullet->m_IsSpecial;
 		m_Status = 1;

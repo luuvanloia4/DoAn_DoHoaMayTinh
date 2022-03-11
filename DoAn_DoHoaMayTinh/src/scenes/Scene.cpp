@@ -61,6 +61,7 @@ void Scene::GenRedDot() {
     
     g_RedDot->m_Type = newType;
     g_RedDot->m_Color = Box::GenColor(newType);
+    g_RedDotSize = 0.05f;
 }
 
 void Scene::LoadMap(string mapName) {
@@ -382,12 +383,14 @@ void Scene::Run() {
 
         //Fire
         if (g_IsFire) {
+            g_RedDot->m_FlySpeed;
             Bullet* newBullet = new Bullet(g_RedDot);
+            newBullet->m_FlySpeed *= 0.05f / g_RedDotSize;
             g_BulletQueue.push_back(newBullet);
             g_BulletQueue.back()->Fire();
             g_IsFire = false;
             GenRedDot();
-            std::cout << "Bullet size: " << g_BulletQueue.size() << std::endl;
+            std::cout << "Bullet queue size: " << g_BulletQueue.size() << std::endl;
         }
 
         //--Bullet
