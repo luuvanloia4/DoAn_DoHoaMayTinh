@@ -11,8 +11,7 @@
 #include "../rendering/ListMaterial.h"
 #include "../gameobject/Bullet.h"
 
-//
-extern std::vector<glm::vec2> g_KillPosition;
+extern int g_BoxTypeCount[10]; //Đếm bóng
 
 class Box : public IDrawable {
 public:
@@ -256,11 +255,13 @@ public:
 						m_Status = -1;
 					}
 					else {
+						g_BoxTypeCount[m_Type]--;
 						m_Type = bullet->m_Type;
 						m_Color = GenColor(m_Type);
+						g_BoxTypeCount[m_Type]++;
 					}
 
-					std::cout << "In site" << std::endl;
+					std::cout << "-- Touch" << std::endl;
 					bullet->m_Status = -1;
 					isTouch = true;
 					break;

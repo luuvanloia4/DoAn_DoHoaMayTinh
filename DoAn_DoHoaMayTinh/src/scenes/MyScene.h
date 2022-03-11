@@ -24,6 +24,7 @@ float g_RedDotSize = 0.05f;
 bool g_IsFire = false;
 
 //Box map
+int g_BoxTypeCount[10];
 Box* g_BoxMap[31][20];
 int g_MapWidth;
 int g_MapHeight;
@@ -46,7 +47,7 @@ glm::quat g_CameraRotation;
 //And
 
 //Relative Dimension In Space
-glm::vec2 g_OffsetX = glm::vec2(-300.0f, -150.0f);
+glm::vec2 g_OffsetX = glm::vec2(-400.0f, -250.0f);
 glm::vec2 g_OffsetY = glm::vec2(0.0f, 1000.0f);
 glm::vec2 g_OffsetZ = glm::vec2(-250.0, 250.0f);
 
@@ -67,34 +68,21 @@ void MyScene::CreateScene() {
     m_TimeStep = 3.0f;
     m_LastTimeChange = 0.0f;
     m_LimitTime = 300; //5p
+    float padding = 20.0f;
+
     for (int i = 0; i < 10; i++) {
-        m_BoxTypeCount[i] = 0;
+        g_BoxTypeCount[i] = 0;
     }
     //
-	FrameRateLimit(60);
+    LoadMap("map_1.map");
 
-    //--Read box map type from file
-    string mapFolder = "resources/texts/boxmap/";
-    string mapPath = mapFolder + "map_1.map";
-    
-    ifstream iFile(mapPath);
-    if (iFile.fail()) {
-        std::cout << "ERROR: read map fail: " << mapPath << std::endl;
-    }
-    else {
-        iFile >> g_MapHeight_Max >> g_MapWidth;
-        for (int i = 0; i < g_MapHeight_Max; i++) {
-            for (int j = 0; j < g_MapWidth; j++) {
-                iFile >> m_BoxType[i][j];
-            }
-        }
-    }
+	FrameRateLimit(60);
 
     //Khởi tạo trạng thái đầu của box map => offset = 0
     m_MapOffset = 0;
     g_MapHeight = 30;
-    g_BoxSize = 10.0f;
-    g_BoxMargin = 2.0f;
+    g_BoxSize = 15.0f;
+    g_BoxMargin = 3.0f;
     //mars
     string skyboxName = "mars";
     skyboxName += "/";
@@ -124,10 +112,11 @@ void MyScene::CreateScene() {
     DrawCuboid(column_model, glm::vec3(0.1f, 0.2f, 0.2f));
 
     //Nền
+    float wallSize = 10.0f;
     glm::vec3 planeColor(0.1f, 0.4f, 0.4f);
-    float planeWidth = 2*g_OffsetZ.y;
+    float planeWidth = 2*(g_OffsetZ.y + wallSize);
     float planeHeight = -2*g_OffsetX.x;
-    float planeSize = 10.0f;
+    float planeSize = 20.0f;
     glm::mat4 plane_model = glm::mat4(1.0f);
     plane_model = glm::translate(plane_model, vec3(0.0f, -planeSize / 2, 0.0f));
     plane_model = glm::scale(plane_model, glm::vec3(planeHeight, planeSize, planeWidth));
@@ -146,14 +135,14 @@ void MyScene::CreateScene() {
     DrawPlane(wall_front_model, wallColor);
     //--Trái
     glm::mat4 wall_left_model = glm::mat4(1.0f);
-    wall_left_model = glm::translate(wall_left_model, glm::vec3(0.0f, wallHeight / 2, -planeWidth/2));
-    wall_left_model = glm::scale(wall_left_model, glm::vec3(planeHeight, wallHeight, 0.0f));
-    DrawPlane(wall_left_model, wallColor);
+    wall_left_model = glm::translate(wall_left_model, glm::vec3(0.0f, wallHeight / 2, -planeWidth/2 + wallSize / 2));
+    wall_left_model = glm::scale(wall_left_model, glm::vec3(planeHeight, wallHeight, wallSize));
+    DrawCuboid(wall_left_model, wallColor);
     ////Phải
     glm::mat4 wall_right_model = glm::mat4(1.0f);
-    wall_right_model = glm::translate(wall_right_model, glm::vec3(0.0f, wallHeight / 2, planeWidth / 2));
-    wall_right_model = glm::scale(wall_right_model, glm::vec3(planeHeight, wallHeight, 0.0f));
-    DrawPlane(wall_right_model, wallColor);
+    wall_right_model = glm::translate(wall_right_model, glm::vec3(0.0f, wallHeight / 2, planeWidth / 2 - wallSize / 2));
+    wall_right_model = glm::scale(wall_right_model, glm::vec3(planeHeight, wallHeight, wallSize ));
+    DrawCuboid(wall_right_model, wallColor);
     //Trên
     glm::mat4 wall_top_model(1.0f);
     wall_top_model = glm::translate(wall_top_model, glm::vec3(0.0f, wallHeight, 0.0f));
@@ -162,12 +151,21 @@ void MyScene::CreateScene() {
     DrawPlane(wall_top_model, planeColor);
 
     //Vạch ngăn:
+    //-- Trước
     float limitHeight = 0.7f;
-    float limitWidth = 10.0f;
-    glm::mat4 limit_model = glm::mat4(1.0f);
-    limit_model = glm::translate(limit_model, glm::vec3(g_OffsetX.y + limitWidth / 2 + limitWidth, limitHeight / 2, 0.0f));
-    limit_model = glm::scale(limit_model, glm::vec3(limitWidth, limitHeight, planeWidth));
-    DrawCuboid(limit_model, glm::vec3(1.0f, 0.3f, 0.2f));
+    float limitSize = 10.0f;
+    glm::mat4 limit_front_model = glm::mat4(1.0f);
+    limit_front_model = glm::translate(limit_front_model, glm::vec3(g_OffsetX.y + limitSize * 2/3, limitHeight / 2, 0.0f));
+    limit_front_model = glm::scale(limit_front_model, glm::vec3(limitSize, limitHeight, planeWidth - 2*wallSize));
+    DrawCuboid(limit_front_model, glm::vec3(1.0f, 0.3f, 0.2f));
+
+    //-- Sau
+    limitHeight = g_CameraOffset.y;
+    limitSize = wallSize;
+    glm::mat4 limit_back_model = glm::mat4(1.0f);
+    limit_back_model = glm::translate(limit_back_model, glm::vec3(g_OffsetX.x + wallSize / 2, limitHeight / 2, 0.0f));
+    limit_back_model = glm::scale(limit_back_model, glm::vec3(limitSize, limitHeight, planeWidth - 2 * wallSize));
+    DrawCuboid(limit_back_model, wallColor);
 
     //Game mode object
     float gameModeSize = 25.0f;
@@ -189,7 +187,7 @@ void MyScene::CreateScene() {
     }
 #pragma endregion
 
-    glm::vec3 startPosition = glm::vec3(planeHeight / 2, 0.0f, 0.0f);
+    glm::vec3 startPosition = glm::vec3(planeHeight / 2 - padding, 0.0f, 0.0f);
     //User
     auto user = CreateObject("user"); {
         user->Root().Move(startPosition);
@@ -239,7 +237,7 @@ void MyScene::CreateScene() {
                                                 curType, false);
 
             g_BoxMap[g_MapHeight - i - 1][j]->SetSize(glm::vec3(g_BoxSize));
-            m_BoxTypeCount[curType]++;
+            g_BoxTypeCount[curType]++;
         }
     }
 

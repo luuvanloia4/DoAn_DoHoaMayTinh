@@ -273,7 +273,7 @@ public:
 		m_RollSpeed = 15.0f;
 		m_Direction = oldBullet->m_Direction;
 		m_IsFly = true;
-		m_FlySpeed = 2.0f;
+		m_FlySpeed = 3.0f;
 		//Game
 		m_IsSpecial = oldBullet->m_IsSpecial;
 		m_Status = 1;

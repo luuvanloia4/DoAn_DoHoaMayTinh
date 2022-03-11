@@ -74,7 +74,7 @@ void FirstPersonController::Update() {
         TransformIn.Value()->MoveWithoutRotation(movement);
 
         //Thoát khỏi chế độ preview
-        if (g_Input.KeyPressed(GLFW_KEY_F)) {
+        if (g_Input.KeyPressed(GLFW_KEY_SPACE)) {
             g_IsPreview = false;
         }
     }
@@ -111,7 +111,6 @@ void FirstPersonController::Update() {
         TransformIn.Value()->Move(movement);
 
         if (g_Input.KeyPressed(GLFW_KEY_SPACE)) {
-            //Chế độ preview bỏ qua mọi định luật vật lý
             int forceStatus = TransformIn.Value()->GetForceStatus();
             if (forceStatus == 0) {
                 TransformIn.Value()->AddForce(1, 3.0f, glm::vec3(0.0f, 1.0f, 0.0f));

@@ -64,7 +64,8 @@ public:
     void DrawCuboid(glm::mat4 model, glm::vec3 color, std::string texturePath);
     void DrawSphere(glm::mat4 model, glm::vec3 color);
     void GenRedDot();
-
+    void CheckKeypress();
+    void LoadMap(string mapName);
     //Game object
     void PushDrawable(IDrawable* obj) {
         m_DrawManager.PushDrawable(obj);
@@ -102,8 +103,10 @@ public:
 
 protected:
     bool m_IsEndGame = false;
+    bool m_IsReset = false;
+    int m_MapCode = 1;
+    bool m_IsChangeMap = false;
     int m_BoxType[230][20];
-    int m_BoxTypeCount[10]; //Đếm bóng
     //Draw object
     int m_MapOffset;
     float m_TimeStep; //Thời gian chờ boxmap đi xuống

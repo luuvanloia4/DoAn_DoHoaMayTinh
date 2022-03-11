@@ -47,37 +47,12 @@ void Scene::Initialize() {
     //m_AudioManager.Initialize();
 }
 
-void Scene::ResetGame() {
-    //
-    m_IsEndGame = false;
-    g_Score = 0;
-    m_MapOffset = 0;
-    for (int i = 0; i < g_MapHeight; i++) {
-        for (int j = 0; j < g_MapWidth; j++) {
-            if (g_BoxMap[g_MapHeight - i - 1][j] != NULL) {
-                delete g_BoxMap[g_MapHeight - i - 1][j];
-                g_BoxMap[g_MapHeight - i - 1][j] = NULL;
-            }
-            if (i < g_NumRowLoad) {
-                g_BoxMap[g_MapHeight - i - 1][j] = new Box(glm::vec3(g_OffsetFront,
-                    g_OffsetTop - i * (g_BoxSize + g_BoxMargin),
-                    g_OffsetLeft + j * (g_BoxSize + g_BoxMargin)),
-                    m_BoxType[g_MapHeight_Max - g_NumRowLoad + i][j], false);
-
-                g_BoxMap[g_MapHeight - i - 1][j]->SetSize(glm::vec3(g_BoxSize));
-            }
-        }
-    }
-
-    m_LastTimeChange = g_Time.CurrentTime();
-}
-
 void Scene::GenRedDot() {
     int newType;
     int typeIndex = 0;
     int l_BoxType[10];
     for (int i = 0; i < 10; i++) {
-        if (m_BoxTypeCount[i] > 0) {
+        if (g_BoxTypeCount[i] > 0) {
             l_BoxType[typeIndex++] = i;
         }
     }
@@ -88,14 +63,96 @@ void Scene::GenRedDot() {
     g_RedDot->m_Color = Box::GenColor(newType);
 }
 
-void Scene::Preview() {
+void Scene::LoadMap(string mapName) {
+    //--Read box map type from file
+    string mapFolder = "resources/texts/boxmap/";
+    string mapPath = mapFolder + mapName;
 
+    ifstream iFile(mapPath);
+    if (iFile.fail()) {
+        std::cout << "ERROR: read map fail: " << mapPath << std::endl;
+    }
+    else {
+        iFile >> g_MapHeight_Max >> g_MapWidth;
+        for (int i = 0; i < g_MapHeight_Max; i++) {
+            for (int j = 0; j < g_MapWidth; j++) {
+                iFile >> m_BoxType[i][j];
+            }
+        }
+    }
+}
+
+void Scene::CheckKeypress() {
+    if (g_Input.KeyReleased(GLFW_KEY_ESCAPE)) {
+        int endSelected = MessageBox(NULL, TEXT("Bạn có thực sự muốn THOÁT khỏi trò chơi?"), TEXT("Thông báo:"), MB_ICONINFORMATION | MB_OKCANCEL);
+        if (endSelected == IDOK) {
+            g_IsPreview = false;
+            Exit();
+        }
+        else {
+            //
+        }
+    }
+
+    if (g_Input.KeyHold(GLFW_KEY_LEFT_CONTROL) || g_Input.KeyHold(GLFW_KEY_RIGHT_CONTROL)) {
+        if (g_Input.KeyPressed(GLFW_KEY_1) && m_MapCode != 1) {
+            int endSelected = MessageBox(NULL, TEXT("Bạn có thực sự muốn đổi sang MAP 1?"), TEXT("Đổi map:"), MB_ICONINFORMATION | MB_OKCANCEL);
+            if (endSelected == IDOK) {
+                m_MapCode = 1;
+                m_IsChangeMap = true;
+                ResetGame();
+            }
+            else {
+                //
+            }
+        }
+        else if (g_Input.KeyPressed(GLFW_KEY_2) && m_MapCode != 2) {
+            int endSelected = MessageBox(NULL, TEXT("Bạn có thực sự muốn đổi sang MAP 2?"), TEXT("Đổi map:"), MB_ICONINFORMATION | MB_OKCANCEL);
+            if (endSelected == IDOK) {
+                m_MapCode = 2;
+                m_IsChangeMap = true;
+                ResetGame();
+            }
+            else {
+                //
+            }
+        }
+        else if (g_Input.KeyPressed(GLFW_KEY_3) && m_MapCode != 3) {
+            int endSelected = MessageBox(NULL, TEXT("Bạn có thực sự muốn đổi sang MAP 3?"), TEXT("Đổi map:"), MB_ICONINFORMATION | MB_OKCANCEL);
+            if (endSelected == IDOK) {
+                m_MapCode = 3;
+                m_IsChangeMap = true;
+                ResetGame();
+            }
+            else {
+                //
+            }
+        }
+    }
+
+    if (!g_IsPreview && g_Input.KeyReleased(GLFW_KEY_F5)) {
+        int endSelected = MessageBox(NULL, TEXT("Bạn có thực sự muốn LÀM LẠI?"), TEXT("Thông báo:"), MB_ICONINFORMATION | MB_OKCANCEL);
+        if (endSelected == IDOK) {
+            ResetGame();
+        }
+        else {
+            //
+        }
+    }
+
+    if (g_Input.KeyReleased(GLFW_KEY_F11)) {
+        g_Window.SwapScreenSize();
+    }
+}
+
+void Scene::Preview() {
+    m_Running = true;
     // Initialize Time manager as close to game loop as possible
     // to avoid misrepresented delta time
     g_Time.Initialize();
 
     m_TxtMessage = new TextRenderer("resources/fonts/times.ttf", 25.0f);
-    m_TxtMessage->Text("This is Preview mode, PRESS F to START the game!!!");
+    m_TxtMessage->Text("This is Preview mode, PRESS SPACE to START the game!!!");
     m_TxtMessage->Position(glm::vec2(0.0f), TextRenderer::EAlign::CENTER, TextRenderer::EAlign::CENTER);
     m_TxtMessage->Color(glm::vec4(1.0f));
     int timeCount = 0;
@@ -113,6 +170,58 @@ void Scene::Preview() {
         // Update global systems
         g_Time.Update();
         g_Input.Update(g_Window);
+
+        if (m_IsReset) {
+            g_Score = 0;
+            for (int i = 0; i < 10; i++) {
+                g_BoxTypeCount[i] = 0;
+            }
+
+            if (m_IsChangeMap) {
+                switch (m_MapCode)
+                {
+                case 1:
+                    LoadMap("map_1.map");
+                    break;
+                case 2:
+                    LoadMap("map_2.map");
+                    break;
+                case 3:
+                    LoadMap("map_3.map");
+                    break;
+                default:
+                    break;
+                }
+
+                //
+                m_IsChangeMap = false;
+            }
+
+            m_MapOffset = 0;
+            int curType;
+            for (int i = 0; i < g_MapHeight; i++) {
+                for (int j = 0; j < g_MapWidth; j++) {
+                    if (g_BoxMap[g_MapHeight - i - 1][j] != NULL) {
+                        delete g_BoxMap[g_MapHeight - i - 1][j];
+                        g_BoxMap[g_MapHeight - i - 1][j] = NULL;
+                    }
+                    if (i < g_NumRowLoad) {
+                        curType = m_BoxType[g_MapHeight_Max - g_NumRowLoad + i][j];
+                        g_BoxMap[g_MapHeight - i - 1][j] = new Box(glm::vec3(g_OffsetFront,
+                            g_OffsetTop - i * (g_BoxSize + g_BoxMargin),
+                            g_OffsetLeft + j * (g_BoxSize + g_BoxMargin)),
+                            curType, false);
+
+                        g_BoxMap[g_MapHeight - i - 1][j]->SetSize(glm::vec3(g_BoxSize));
+                        g_BoxTypeCount[curType]++;
+                    }
+                }
+            }
+
+            GenRedDot();
+            //
+            m_IsReset = false;
+        }
 
         timeCount = g_Time.CurrentTime();
         if (timeCount % flashSpeed == flashSpeed - 1) {
@@ -132,14 +241,13 @@ void Scene::Preview() {
         m_ObjectManager.ProcessFrame();
         m_DrawManager.CallDraws();
         //g_IsPreview = false;
+        CheckKeypress();
     }
     //End preview
     m_DrawManager.UnregisterGUIWidget(m_TxtMessage);
 };
 
 void Scene::Run() {
-    m_Running = true;
-
     // Initialize Time manager as close to game loop as possible
     // to avoid misrepresented delta time
     g_Time.Initialize();
@@ -154,8 +262,9 @@ void Scene::Run() {
     int l_TimeCount = l_TimeMax - l_CurTime;
 
     std::cout << "IsPreview: " << g_IsPreview << std::endl;
+    m_TxtMessage->Color(glm::vec4(1.0f));
     m_DrawManager.RegisterGUIWidget(m_TxtMessage);
-    if (g_IsPreview) {
+    if (g_IsPreview && m_Running) {
         while (l_TimeCount > -1 && !glfwWindowShouldClose(g_Window)) {
             do {
                 g_Time.Hold();
@@ -205,6 +314,65 @@ void Scene::Run() {
         g_Time.Update();
         g_Input.Update(g_Window);
         
+        if (m_IsReset) {
+            g_Score = 0;
+            for (int i = 0; i < 10; i++) {
+                g_BoxTypeCount[i] = 0;
+            }
+
+            if (m_IsChangeMap) {
+                switch (m_MapCode)
+                {
+                case 1:
+                    LoadMap("map_1.map");
+                    break;
+                case 2:
+                    LoadMap("map_2.map");
+                    break;
+                case 3:
+                    LoadMap("map_3.map");
+                    break;
+                default:
+                    break;
+                }
+
+                //
+                m_IsChangeMap = false;
+            }
+
+            m_MapOffset = 0;
+            int curType;
+            for (int i = 0; i < g_MapHeight; i++) {
+                for (int j = 0; j < g_MapWidth; j++) {
+                    if (g_BoxMap[g_MapHeight - i - 1][j] != NULL) {
+                        delete g_BoxMap[g_MapHeight - i - 1][j];
+                        g_BoxMap[g_MapHeight - i - 1][j] = NULL;
+                    }
+                    if (i < g_NumRowLoad) {
+                        curType = m_BoxType[g_MapHeight_Max - g_NumRowLoad + i][j];
+                        g_BoxMap[g_MapHeight - i - 1][j] = new Box(glm::vec3(g_OffsetFront,
+                            g_OffsetTop - i * (g_BoxSize + g_BoxMargin),
+                            g_OffsetLeft + j * (g_BoxSize + g_BoxMargin)),
+                            curType, false);
+
+                        g_BoxMap[g_MapHeight - i - 1][j]->SetSize(glm::vec3(g_BoxSize));
+                        g_BoxTypeCount[curType]++;
+                    }
+                }
+            }
+
+            m_LastTimeChange = g_Time.CurrentTime();
+            l_LastTime = g_Time.CurrentTime();
+            l_TimeMax = m_LimitTime + l_LastTime; //Second
+            l_CurTime = l_LastTime;
+
+            GenRedDot();
+
+            g_BulletQueue.clear();
+            //
+            m_IsReset = false;
+        }
+
         //Time
         l_CurTime = g_Time.CurrentTime();
         if (l_CurTime != l_LastTime) {
@@ -270,7 +438,7 @@ void Scene::Run() {
                         killCount = 0;
                         TryToKill(i, j, g_BoxMap[i][j]->m_Type, killCount);
                         g_Score += killCount * factor;
-                        m_BoxTypeCount[killType] -= killCount;
+                        g_BoxTypeCount[killType] -= killCount;
                         isKill = true;
                         //l_TxtScore->Text("Score: " + to_string(g_Score));
                         break;
@@ -317,7 +485,7 @@ void Scene::Run() {
                         g_BoxMap[g_MapHeight - 1][j] = new Box(glm::vec3(g_OffsetFront, g_OffsetTop, g_OffsetLeft + j * (g_BoxSize + g_BoxMargin)),
                             curType, false);
                         g_BoxMap[g_MapHeight - 1][j]->SetSize(glm::vec3(g_BoxSize));
-                        m_BoxTypeCount[curType]++;
+                        g_BoxTypeCount[curType]++;
                     }
                 }
 
@@ -345,12 +513,18 @@ void Scene::Run() {
 
         m_ObjectManager.ProcessFrame();
         m_DrawManager.CallDraws();
+        CheckKeypress();
     }
 }
 
 void Scene::Destroy() {
     m_ObjectManager.DestroyObjects();
     //m_PhysicsManager.ExitPhysics();
+}
+
+void Scene::ResetGame() {
+    m_IsEndGame = false;
+    m_IsReset = true;
 }
 
 void Scene::Exit() {

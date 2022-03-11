@@ -47,16 +47,18 @@ void Transform::Position(const glm::vec3& position) {
 }
 
 void Transform::Move(const glm::vec3& vector) {
+    float padding = 20.0f;
+
     m_Position = m_Position + m_Rotation * vector;
     //X limit
-    m_Position.x = (m_Position.x < g_OffsetX.x) ? g_OffsetX.x : m_Position.x;
-    m_Position.x = (m_Position.x > g_OffsetX.y) ? g_OffsetX.y : m_Position.x;
+    m_Position.x = (m_Position.x < g_OffsetX.x + padding) ? g_OffsetX.x + padding : m_Position.x;
+    m_Position.x = (m_Position.x > g_OffsetX.y - padding) ? g_OffsetX.y - padding : m_Position.x;
     //Y limit
     m_Position.y = (m_Position.y < g_OffsetY.x) ? g_OffsetY.x : m_Position.y;
     m_Position.y = (m_Position.y > g_OffsetY.y) ? g_OffsetY.y : m_Position.y;
     //Z limit
-    m_Position.z = (m_Position.z < g_OffsetZ.x) ? g_OffsetZ.x : m_Position.z;
-    m_Position.z = (m_Position.z > g_OffsetZ.y) ? g_OffsetZ.y : m_Position.z;
+    m_Position.z = (m_Position.z < g_OffsetZ.x + padding) ? g_OffsetZ.x + padding : m_Position.z;
+    m_Position.z = (m_Position.z > g_OffsetZ.y - padding) ? g_OffsetZ.y - padding : m_Position.z;
 
     //std::cout << m_Position.x << " () " << m_Position.y << std::endl;
 

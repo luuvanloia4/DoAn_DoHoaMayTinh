@@ -102,6 +102,8 @@ int main() {
 
 	/*glViewport(0, 0, WIDTH, HEIGHT);
 	glfwSetFramebufferSizeCallback(myWindow, framebuffer_size_callback);*/
+	srand(time(NULL));
+
 #pragma endregion
 	MyScene myScene;
 	myScene.Initialize();
